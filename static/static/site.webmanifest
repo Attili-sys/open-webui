@@ -1,6 +1,6 @@
 {
-  "name": "Open WebUI",
-  "short_name": "WebUI",
+  "name": "ASK Aljazeera",
+  "short_name": "ASK",
   "icons": [
     {
       "src": "/static/web-app-manifest-192x192.png",
