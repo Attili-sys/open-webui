@@ -139,7 +139,7 @@
 			<div class="absolute inset-0 bg-black" style={backdropStyle}></div>
 		{/if}
 		<div
-			class="{swipeSide
+			class="app-drawer-surface {swipeSide
 				? 'relative'
 				: ''} mt-auto w-full bg-gray-50 dark:bg-gray-900 dark:text-gray-100 {className} scrollbar-hidden max-h-[100dvh] overflow-y-auto"
 			style={panelStyle}

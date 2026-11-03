@@ -123,7 +123,9 @@
 		!$selectedFolder.write_access;
 </script>
 
-<div class="m-auto w-full max-w-[58rem] px-1 md:@2xl:px-20 translate-y-6 py-24 text-center">
+<div
+	class="chat-welcome m-auto w-full max-w-[58rem] px-1 md:@2xl:px-20 translate-y-6 py-24 text-center"
+>
 	{#if $temporaryChatEnabled}
 		<Tooltip
 			content={$i18n.t("This chat won't appear in history and your messages will not be saved.")}
@@ -136,7 +138,9 @@
 		</Tooltip>
 	{/if}
 
-	<div class="w-full text-3xl text-gray-800 dark:text-gray-100 text-center flex items-center gap-4">
+	<div
+		class="chat-welcome-heading w-full text-3xl text-gray-800 dark:text-gray-100 text-center flex items-center gap-4"
+	>
 		<div class="w-full flex flex-col justify-center items-center">
 			{#if $selectedFolder}
 				<FolderTitle
@@ -153,7 +157,7 @@
 				/>
 			{:else}
 				<div class="flex flex-row justify-center gap-2.5 @sm:gap-3 w-fit px-5 max-w-xl">
-					<div class="flex shrink-0 justify-center">
+					<div class="chat-welcome-model flex shrink-0 justify-center">
 						<div class="flex -space-x-4 mb-0.5" in:fade={{ duration: 100 }}>
 							{#each models as model, modelIdx}
 								<Tooltip
@@ -191,7 +195,7 @@
 					</div>
 
 					<h2
-						class=" text-2xl @sm:text-2xl line-clamp-1 flex items-center"
+						class="chat-welcome-title text-2xl @sm:text-2xl line-clamp-1 flex items-center"
 						in:fade={{ duration: 100 }}
 					>
 						{#if selectedModelName}

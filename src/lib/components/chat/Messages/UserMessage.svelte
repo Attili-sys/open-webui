@@ -429,7 +429,7 @@
 							: 'w-full'}"
 					>
 						<div
-							class="rounded-3xl {($settings?.chatBubble ?? true)
+							class="user-message-bubble rounded-3xl {($settings?.chatBubble ?? true)
 								? `max-w-[90%] px-4 py-1.5  bg-gray-50 dark:bg-gray-850 ${
 										message.files ? (isOwn ? 'rounded-se-lg' : 'rounded-ss-lg') : ''
 									}`

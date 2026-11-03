@@ -71,11 +71,14 @@
 					document.documentElement.style.setProperty('--color-gray-950', '#000000');
 					document.documentElement.classList.add('dark');
 					metaThemeColorTag.setAttribute('content', '#000000');
+				} else if (localStorage.theme === 'gravity') {
+					document.documentElement.classList.add('dark', 'gravity');
+					metaThemeColorTag.setAttribute('content', '#050c18');
 				} else if (localStorage.theme === 'light') {
 					document.documentElement.classList.add('light');
 					metaThemeColorTag.setAttribute('content', '#ffffff');
 				} else if (localStorage.theme === 'her') {
-					document.documentElement.classList.add('her');
+					document.documentElement.classList.add('light', 'her');
 					metaThemeColorTag.setAttribute('content', '#983724');
 				} else {
 					document.documentElement.classList.add('dark');
@@ -227,6 +230,12 @@
 
 		html.her #splash-screen {
 			background: #983724;
+		}
+
+		html.gravity #splash-screen {
+			background:
+				radial-gradient(ellipse at 50% 75%, rgb(47 130 246 / 28%), transparent 52%),
+				linear-gradient(155deg, #050b16 0%, #07162b 45%, #0b2851 100%);
 		}
 
 		#logo-her {

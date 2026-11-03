@@ -157,7 +157,7 @@
 			aria-modal="true"
 			aria-label={title !== '' ? title : $i18n.t('Confirm your action')}
 			tabindex="-1"
-			class="m-auto max-w-full w-[32rem] mx-2 bg-white dark:bg-gray-950 rounded-3xl max-h-[100dvh] shadow-3xl border border-white dark:border-gray-900"
+			class="app-modal-surface m-auto max-w-full w-[32rem] mx-2 bg-white dark:bg-gray-950 rounded-3xl max-h-[100dvh] shadow-3xl border border-white dark:border-gray-900"
 			in:flyAndScale
 			on:mousedown={(e) => {
 				e.stopPropagation();

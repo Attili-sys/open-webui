@@ -16,6 +16,7 @@
 		models,
 		settings,
 		theme,
+		systemPrefersDark,
 		WEBUI_NAME,
 		WEBUI_VERSION,
 		WEBUI_DEPLOYMENT_ID,
@@ -75,6 +76,7 @@
 		removeAllDetails
 	} from '$lib/utils';
 	import { setTextScale } from '$lib/utils/text-scale';
+	import { applyAppTheme, isDarkTheme } from '$lib/utils/theme';
 
 	import NotificationToast from '$lib/components/NotificationToast.svelte';
 	import SyncStatsModal from '$lib/components/chat/Settings/SyncStatsModal.svelte';
@@ -1059,20 +1061,10 @@
 			const newTheme = event.data.theme;
 			localStorage.setItem('theme', newTheme);
 			theme.set(newTheme);
-
-			// Apply theme classes (mirrors logic from chat/Settings/General.svelte)
-			const themes = ['dark', 'light', 'oled-dark'];
-			let themeToApply =
-				newTheme === 'oled-dark' ? 'dark' : newTheme === 'her' ? 'light' : newTheme;
-			if (newTheme === 'system') {
-				themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-			}
-			themes
-				.filter((e) => e !== themeToApply)
-				.forEach((e) => {
-					e.split(' ').forEach((cls) => document.documentElement.classList.remove(cls));
-				});
-			themeToApply.split(' ').forEach((cls) => document.documentElement.classList.add(cls));
+			applyAppTheme(newTheme, {
+				prefersDark: window.matchMedia('(prefers-color-scheme: dark)').matches
+			});
+			window.applyTheme?.();
 			return;
 		}
 		if (event.type === 'models:refresh') {
@@ -1187,12 +1179,6 @@
 		document.addEventListener('touchmove', touchmoveHandler, { passive: false });
 		document.addEventListener('touchend', touchendHandler);
 
-		if (typeof window !== 'undefined') {
-			if (window.applyTheme) {
-				window.applyTheme();
-			}
-		}
-
 		if (window?.electronAPI) {
 			const info = await window.electronAPI.send({
 				type: 'app:info'
@@ -1262,7 +1248,20 @@
 		// Call visibility change handler initially to set state on load
 		handleVisibilityChange();
 
-		theme.set(localStorage.theme);
+		const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleColorSchemeChange = (event) => {
+			systemPrefersDark.set(event.matches);
+			if (localStorage.theme === 'system') {
+				applyAppTheme('system', { prefersDark: event.matches });
+				window.applyTheme?.();
+			}
+		};
+		const storedTheme = localStorage.theme ?? 'system';
+		systemPrefersDark.set(colorSchemeQuery.matches);
+		applyAppTheme(storedTheme, { prefersDark: colorSchemeQuery.matches });
+		theme.set(storedTheme);
+		window.applyTheme?.();
+		colorSchemeQuery.addEventListener('change', handleColorSchemeChange);
 
 		mobile.set(window.innerWidth < BREAKPOINT);
 
@@ -1440,6 +1439,7 @@
 			window.removeEventListener('pagehide', handlePageHidden);
 			window.removeEventListener('pageshow', handlePageVisible);
 			window.removeEventListener('beforeunload', beforeUnloadHandler);
+			colorSchemeQuery.removeEventListener('change', handleColorSchemeChange);
 			unsubscribeQueueUser();
 		};
 	});
@@ -1515,13 +1515,7 @@
 
 <div aria-live="polite">
 	<Toaster
-		theme={$theme.includes('dark')
-			? 'dark'
-			: $theme === 'system'
-				? window.matchMedia('(prefers-color-scheme: dark)').matches
-					? 'dark'
-					: 'light'
-				: 'light'}
+		theme={isDarkTheme($theme, $systemPrefersDark) ? 'dark' : 'light'}
 		richColors
 		position="top-right"
 		closeButton
