@@ -66,6 +66,14 @@ export default defineConfig({
 				target: backendTarget,
 				changeOrigin: true,
 				ws: true
+			},
+			'/static': {
+				target: backendTarget,
+				changeOrigin: true
+			},
+			'/cache': {
+				target: backendTarget,
+				changeOrigin: true
 			}
 		}
 	},

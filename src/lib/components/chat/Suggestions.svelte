@@ -82,7 +82,7 @@
 	{/if}
 </div>
 
-<div class="h-36 w-full">
+<div class="suggestion-frame h-36 w-full">
 	{#if filteredPrompts.length > 0}
 		<div
 			role="list"

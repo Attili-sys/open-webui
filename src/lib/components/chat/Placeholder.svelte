@@ -156,7 +156,9 @@
 					}}
 				/>
 			{:else}
-				<div class="flex flex-row justify-center gap-2.5 @sm:gap-3 w-fit px-5 max-w-xl">
+				<div
+					class="chat-welcome-hero flex flex-row justify-center gap-2.5 @sm:gap-3 w-fit px-5 max-w-xl"
+				>
 					<div class="chat-welcome-model flex shrink-0 justify-center">
 						<div class="flex -space-x-4 mb-0.5" in:fade={{ duration: 100 }}>
 							{#each models as model, modelIdx}
@@ -260,7 +262,11 @@
 				</div>
 			{/if}
 
-			<div class="text-base font-normal @md:max-w-3xl w-full py-3 {atSelectedModel ? 'mt-2' : ''}">
+			<div
+				class="chat-welcome-composer text-base font-normal @md:max-w-3xl w-full py-3 {atSelectedModel
+					? 'mt-2'
+					: ''}"
+			>
 				{#if !($selectedFolder && folderReadOnly)}
 					<MessageInput
 						{chatId}
@@ -317,7 +323,10 @@
 			<FolderPlaceholder folder={$selectedFolder} />
 		</div>
 	{:else}
-		<div class="mx-auto max-w-2xl mt-2" in:fade={{ duration: 200, delay: 200 }}>
+		<div
+			class="chat-welcome-suggestions mx-auto max-w-2xl mt-2"
+			in:fade={{ duration: 200, delay: 200 }}
+		>
 			<div class="mx-5">
 				<Suggestions suggestionPrompts={selectedSuggestionPrompts} inputValue={prompt} {onSelect} />
 			</div>
