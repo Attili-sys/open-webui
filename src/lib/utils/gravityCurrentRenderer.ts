@@ -121,6 +121,29 @@ void main() {
 }
 `;
 
+const ECLIPSE_BACKGROUND_FRAG = /* glsl */ `#version 300 es
+precision highp float;
+uniform vec2 u_view;
+uniform float u_dpr;
+uniform float u_time;
+uniform float u_motion;
+out vec4 o_color;
+
+void main() {
+	vec2 frag = vec2(gl_FragCoord.x / u_dpr, u_view.y - gl_FragCoord.y / u_dpr);
+	vec2 uv = frag / u_view;
+	float aspect = u_view.x / max(u_view.y, 1.0);
+	vec2 p = (uv - vec2(0.57, 0.46)) * vec2(aspect, 1.0);
+	float breathe = 0.84 + 0.16 * sin(u_time * u_motion * 0.4);
+	float pool = exp(-dot(p / vec2(0.2, 0.1), p / vec2(0.2, 0.1)));
+	float outer = exp(-dot(p / vec2(0.34, 0.16), p / vec2(0.34, 0.16)));
+	vec3 color = vec3(0.027, 0.028, 0.032);
+	color += vec3(0.02, 0.045, 0.14) * outer * 0.28;
+	color += vec3(0.1, 0.24, 0.72) * pool * 0.42 * breathe;
+	o_color = vec4(color, 1.0);
+}
+`;
+
 const CURRENT_SHARED = /* glsl */ `
 uniform vec2 u_view;
 uniform float u_time;
@@ -234,6 +257,8 @@ const FILAMENT_FRAG = /* glsl */ `#version 300 es
 precision highp float;
 uniform float u_time;
 uniform float u_motion;
+uniform float u_level;
+uniform float u_matte;
 in float v_across;
 in float v_core;
 in float v_brightness;
@@ -248,9 +273,11 @@ void main() {
 	float feather = exp(-(d * d) / 4.2) * 0.03;
 	float imperfection = 0.64 + 0.36 * pow(0.5 + 0.5 * sin(v_distance * 0.075 + v_seed * 47.0), 1.7);
 	float shimmer = 0.93 + 0.07 * sin(v_distance * 0.035 - u_time * 0.35 * u_motion + v_seed * 67.0);
-	float energy = (core * imperfection * shimmer + feather) * v_brightness * 0.34;
+	float energy = (core * imperfection * shimmer + feather) * v_brightness * 0.34 * u_level;
 	vec3 blue = vec3(0.48, 0.7, 1.0);
 	vec3 tint = mix(blue, vec3(0.96, 0.985, 1.0), v_white);
+	// Eclipse keeps the field energy but grades it into the cobalt light pool.
+	tint = mix(tint, vec3(0.16, 0.36, 0.98), u_matte);
 	o_color = vec4(tint * energy, 0.0);
 }
 `;
@@ -293,6 +320,8 @@ void main() {
 
 const PARTICLE_FRAG = /* glsl */ `#version 300 es
 precision highp float;
+uniform float u_level;
+uniform float u_matte;
 in float v_alpha;
 in float v_kind;
 in float v_white;
@@ -315,7 +344,9 @@ void main() {
 
 	vec3 blue = vec3(0.32, 0.59, 1.0);
 	vec3 tint = mix(blue, vec3(0.97, 0.99, 1.0), v_white);
-	float energy = profile * v_alpha * (v_kind > 0.5 && v_kind < 1.5 ? 1.5 : 1.0);
+	tint = mix(tint, vec3(0.22, 0.44, 1.0), u_matte);
+	float energy = profile * v_alpha * (v_kind > 0.5 && v_kind < 1.5 ? 1.5 : 1.0) * u_level;
+	energy *= v_kind > 1.5 ? 1.0 - u_matte : 1.0;
 	o_color = vec4(tint * energy, 0.0);
 }
 `;
@@ -353,8 +384,9 @@ const QUAD = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]);
 
 export const createGravityCurrentRenderer = (
 	canvas: HTMLCanvasElement,
-	options: { reducedMotion: boolean }
+	options: { reducedMotion: boolean; treatment?: 'field' | 'eclipse' }
 ): GravityCurrentRenderer | null => {
+	const eclipse = options.treatment === 'eclipse';
 	const gl = canvas.getContext('webgl2', {
 		alpha: false,
 		antialias: false,
@@ -369,7 +401,7 @@ export const createGravityCurrentRenderer = (
 	let filaments: WebGLProgram;
 	let particles: WebGLProgram;
 	try {
-		background = link(gl, BACKGROUND_VERT, BACKGROUND_FRAG);
+		background = link(gl, BACKGROUND_VERT, eclipse ? ECLIPSE_BACKGROUND_FRAG : BACKGROUND_FRAG);
 		filaments = link(gl, FILAMENT_VERT, FILAMENT_FRAG);
 		particles = link(gl, PARTICLE_VERT, PARTICLE_FRAG);
 	} catch (error) {
@@ -440,7 +472,9 @@ export const createGravityCurrentRenderer = (
 		drag: uniform(program, 'u_drag'),
 		control: uniform(program, 'u_control'),
 		pathMotion: uniform(program, 'u_pathMotion'),
-		pathLook: uniform(program, 'u_pathLook')
+		pathLook: uniform(program, 'u_pathLook'),
+		level: uniform(program, 'u_level'),
+		matte: uniform(program, 'u_matte')
 	});
 	const filamentUniforms = currentUniforms(filaments);
 	const particleUniforms = currentUniforms(particles);
@@ -457,6 +491,9 @@ export const createGravityCurrentRenderer = (
 	}
 
 	const motion = options.reducedMotion ? 0 : 1;
+	// Eclipse uses the same filaments as Gravity Field. The large haze motes are what flood a dark sky.
+	const level = eclipse ? 1.35 : 1;
+	const matte = eclipse ? 1 : 0;
 	let view = { width: 1, height: 1, dpr: 1 };
 	let lens: LensState = createLens();
 	const pointer = { x: 0, y: 0, active: false };
@@ -491,6 +528,8 @@ export const createGravityCurrentRenderer = (
 		gl.uniform1f(uniforms.motion, motion);
 		gl.uniform3f(uniforms.lens, lens.x, lens.y, lens.presence);
 		gl.uniform2f(uniforms.drag, lens.dragX, lens.dragY);
+		gl.uniform1f(uniforms.level, level);
+		gl.uniform1f(uniforms.matte, matte);
 	};
 
 	const frame = (timeMs: number) => {

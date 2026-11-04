@@ -2,12 +2,20 @@
 	import { onDestroy, onMount } from 'svelte';
 
 	import { theme } from '$lib/stores';
+	import {
+		createGravityCurrentRenderer,
+		type GravityCurrentRenderer
+	} from '$lib/utils/gravityCurrentRenderer';
 
 	let atmosphere: HTMLDivElement;
+	let canvas: HTMLCanvasElement;
+	let renderer: GravityCurrentRenderer | null = null;
 	let mounted = false;
 	let reducedMotion = false;
 	let paused = false;
 	let raf = 0;
+	let fieldRaf = 0;
+	let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 	let targetX = 0;
 	let targetY = 0;
 	let currentX = 0;
@@ -30,15 +38,53 @@
 		}
 	};
 
+	const sizeField = () => {
+		renderer?.resize(
+			window.innerWidth,
+			window.innerHeight,
+			Math.min(window.devicePixelRatio || 1, 2)
+		);
+	};
+
+	const tickField = (time: number) => {
+		fieldRaf = 0;
+		if (!renderer || document.hidden || $theme !== 'gravity-eclipse' || canvas.clientWidth === 0) {
+			return;
+		}
+		renderer.frame(time);
+		if (!reducedMotion) fieldRaf = requestAnimationFrame(tickField);
+	};
+
+	const startField = () => {
+		if (!mounted || fieldRaf || $theme !== 'gravity-eclipse') return;
+		if (!renderer) {
+			renderer = createGravityCurrentRenderer(canvas, {
+				reducedMotion,
+				treatment: 'eclipse'
+			});
+			sizeField();
+		}
+		fieldRaf = requestAnimationFrame(tickField);
+	};
+
+	const stopField = () => {
+		if (fieldRaf) cancelAnimationFrame(fieldRaf);
+		fieldRaf = 0;
+	};
+
 	const start = () => {
-		if (!mounted || raf || $theme !== 'gravity-eclipse') return;
-		raf = requestAnimationFrame(paint);
+		if (!mounted || $theme !== 'gravity-eclipse') return;
+		if (!raf) raf = requestAnimationFrame(paint);
+		startField();
 	};
 
 	const onPointerMove = (event: PointerEvent) => {
-		if (reducedMotion || $theme !== 'gravity-eclipse') return;
-		targetX = (event.clientX / window.innerWidth - 0.5) * 2;
-		targetY = (event.clientY / window.innerHeight - 0.5) * 2;
+		if ($theme !== 'gravity-eclipse') return;
+		if (!reducedMotion) {
+			targetX = (event.clientX / window.innerWidth - 0.5) * 2;
+			targetY = (event.clientY / window.innerHeight - 0.5) * 2;
+			renderer?.setPointer(event.clientX, event.clientY);
+		}
 		start();
 	};
 
@@ -46,7 +92,16 @@
 		if (event.relatedTarget) return;
 		targetX = 0;
 		targetY = 0;
+		renderer?.clearPointer();
 		start();
+	};
+
+	const onResize = () => {
+		clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(() => {
+			sizeField();
+			start();
+		}, 120);
 	};
 
 	const onVisibility = () => {
@@ -56,15 +111,17 @@
 
 	$: if (mounted) {
 		if ($theme === 'gravity-eclipse') start();
-		else if (raf) {
-			cancelAnimationFrame(raf);
+		else {
+			if (raf) cancelAnimationFrame(raf);
 			raf = 0;
+			stopField();
 		}
 	}
 
 	onMount(() => {
 		reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		mounted = true;
+		window.addEventListener('resize', onResize);
 		window.addEventListener('pointermove', onPointerMove, { passive: true });
 		document.addEventListener('pointerout', onPointerOut);
 		document.addEventListener('visibilitychange', onVisibility);
@@ -74,6 +131,11 @@
 	onDestroy(() => {
 		mounted = false;
 		if (raf) cancelAnimationFrame(raf);
+		stopField();
+		clearTimeout(resizeTimer);
+		renderer?.destroy();
+		renderer = null;
+		window.removeEventListener('resize', onResize);
 		window.removeEventListener('pointermove', onPointerMove);
 		document.removeEventListener('pointerout', onPointerOut);
 		document.removeEventListener('visibilitychange', onVisibility);
@@ -90,6 +152,7 @@
 	<div class="gravity-eclipse-atmosphere__core"></div>
 	<div class="gravity-eclipse-atmosphere__current"></div>
 	<div class="gravity-eclipse-atmosphere__veil"></div>
+	<canvas class="gravity-eclipse-atmosphere__canvas" bind:this={canvas}></canvas>
 </div>
 
 <style>
@@ -119,6 +182,7 @@
 	.gravity-eclipse-atmosphere::after {
 		content: '';
 		position: absolute;
+		z-index: 1;
 		inset: 0;
 		background: radial-gradient(
 			ellipse 62% 55% at 57% 50%,
@@ -174,6 +238,14 @@
 		);
 		filter: blur(1.8rem);
 		animation: eclipse-current 13s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+	}
+
+	.gravity-eclipse-atmosphere__canvas {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 	.gravity-eclipse-atmosphere__veil {
