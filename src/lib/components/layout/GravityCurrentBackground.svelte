@@ -108,7 +108,7 @@
 		contain: strict;
 	}
 
-	:global(html.gravity-field) .gravity-current-atmosphere {
+	:global(html.gravity-field:not(.gravity-eclipse)) .gravity-current-atmosphere {
 		display: block;
 	}
 

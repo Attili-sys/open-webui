@@ -59,6 +59,15 @@ describe('resolveAppTheme', () => {
 		});
 	});
 
+	it('layers Gravity Eclipse on the complete Gravity Field theme', () => {
+		expect(resolveAppTheme('gravity-eclipse')).toEqual({
+			classes: ['dark', 'gravity', 'gravity-flow', 'gravity-field', 'gravity-eclipse'],
+			isDark: true,
+			metaColor: '#101113',
+			grayPalette: null
+		});
+	});
+
 	it('resolves the system theme from the current color-scheme preference', () => {
 		expect(resolveAppTheme('system', false).classes).toEqual(['light']);
 		expect(resolveAppTheme('system', true).classes).toEqual(['dark']);
@@ -81,12 +90,13 @@ describe('applyAppTheme', () => {
 	it('drops the Gravity Flow class when switching back to plain Gravity', () => {
 		const themeDocument = createThemeDocument();
 
-		applyAppTheme('gravity-field', themeDocument);
+		applyAppTheme('gravity-eclipse', themeDocument);
 		expect([...themeDocument.classes]).toEqual([
 			'dark',
 			'gravity',
 			'gravity-flow',
-			'gravity-field'
+			'gravity-field',
+			'gravity-eclipse'
 		]);
 
 		applyAppTheme('gravity', themeDocument);

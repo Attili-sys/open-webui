@@ -5,7 +5,8 @@ export const APP_THEME_CLASSES = [
 	'her',
 	'gravity',
 	'gravity-flow',
-	'gravity-field'
+	'gravity-field',
+	'gravity-eclipse'
 ] as const;
 
 export const THEME_GRAY_PROPERTIES = [
@@ -112,6 +113,16 @@ export const resolveAppTheme = (theme: string, prefersDark = false): AppThemeRes
 			classes: ['dark', 'gravity', 'gravity-flow', 'gravity-field'],
 			isDark: true,
 			metaColor: '#050c18',
+			grayPalette: null
+		};
+	}
+
+	// Gravity Eclipse inherits the mature Gravity UI behavior and replaces its visual treatment.
+	if (theme === 'gravity-eclipse') {
+		return {
+			classes: ['dark', 'gravity', 'gravity-flow', 'gravity-field', 'gravity-eclipse'],
+			isDark: true,
+			metaColor: '#101113',
 			grayPalette: null
 		};
 	}

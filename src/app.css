@@ -1551,6 +1551,255 @@ html.gravity :where(input, textarea, select, [contenteditable='true'])::placehol
 	background-color: rgb(101 145 194 / 0.42);
 }
 
+/*
+ * Gravity Eclipse
+ *
+ * A restrained near-black interpretation of the Gravity interface. The broad
+ * cobalt aura is rendered by GravityEclipseBackground; these overrides keep
+ * surfaces quiet so the light field remains the focal point.
+ */
+html.gravity-eclipse {
+	--color-gray-50: #f4f5f8;
+	--color-gray-100: #e5e7ec;
+	--color-gray-200: #ced1d9;
+	--color-gray-300: #aeb2bd;
+	--color-gray-400: #888d99;
+	--color-gray-500: #717681;
+	--color-gray-600: #5d626d;
+	--color-gray-700: #393c43;
+	--color-gray-800: #282a2f;
+	--color-gray-850: #202226;
+	--color-gray-900: #191a1d;
+	--color-gray-950: #101113;
+
+	--gravity-bg-deep: #101113;
+	--gravity-bg-base: #141519;
+	--gravity-bg-surface: rgb(29 30 34 / 0.88);
+	--gravity-bg-elevated: rgb(35 36 41 / 0.94);
+	--gravity-bg-hover: rgb(57 62 76 / 0.32);
+	--gravity-accent: #6e8ff5;
+	--gravity-accent-strong: #4f74e8;
+	--gravity-accent-soft: #91a8f8;
+	--gravity-accent-glow: rgb(57 96 226 / 0.22);
+	--gravity-accent-ring: rgb(103 135 239 / 0.5);
+	--gravity-text-primary: #eeeff3;
+	--gravity-text-secondary: #a8abb4;
+	--gravity-text-tertiary: #777b85;
+	--gravity-ink: #f0f1f4;
+	--gravity-glass-bg: rgb(27 28 32 / 0.88);
+	--gravity-glass-bg-strong: rgb(24 25 29 / 0.96);
+	--gravity-glass-border: rgb(255 255 255 / 0.085);
+	--gravity-glass-highlight: rgb(255 255 255 / 0.055);
+	--gravity-shadow: 0 1.5rem 5rem rgb(0 0 0 / 0.42);
+	--gravity-shadow-soft: 0 0.75rem 2.5rem rgb(0 0 0 / 0.32);
+	--gravity-gradient-canvas: #101113;
+}
+
+html.gravity-eclipse body {
+	background: #101113;
+}
+
+html.gravity-eclipse .app-shell:not(:has(.chat-welcome))::before {
+	background: rgb(15 16 18 / 0.9);
+}
+
+html.gravity-eclipse .app-sidebar-panel,
+html.gravity-eclipse .app-sidebar-rail {
+	border-color: rgb(255 255 255 / 0.065);
+	background: rgb(27 28 31 / 0.96);
+	box-shadow:
+		inset -1px 0 rgb(255 255 255 / 0.025),
+		1rem 0 3rem rgb(0 0 0 / 0.16);
+	backdrop-filter: blur(1.3rem) saturate(105%);
+	-webkit-backdrop-filter: blur(1.3rem) saturate(105%);
+}
+
+html.gravity-eclipse .sidebar-bg-gradient-to-t,
+html.gravity-eclipse .sidebar-bg-gradient-to-b {
+	--tw-gradient-from: rgb(27 28 31 / 0.94);
+}
+
+html.gravity-eclipse .app-sidebar-new-chat {
+	border-color: rgb(255 255 255 / 0.1);
+	background: rgb(255 255 255 / 0.035);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+}
+
+html.gravity-eclipse .app-sidebar-new-chat:hover {
+	border-color: rgb(255 255 255 / 0.15);
+	background: rgb(255 255 255 / 0.065);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.05);
+}
+
+html.gravity-eclipse .chat-welcome-title {
+	color: #e9eaf0;
+	-webkit-text-fill-color: #e9eaf0;
+	font-size: clamp(1.85rem, 2.8vw, 2.45rem);
+	font-weight: 350;
+	letter-spacing: -0.022em;
+	text-shadow: 0 0.25rem 2rem rgb(0 0 0 / 0.45);
+}
+
+html.gravity-eclipse .chat-welcome-model img {
+	border-color: rgb(255 255 255 / 0.15);
+	box-shadow:
+		0 0 0 0.2rem rgb(255 255 255 / 0.025),
+		0 0.75rem 2rem rgb(0 0 0 / 0.28);
+}
+
+html.gravity-eclipse .chat-welcome .message-composer {
+	--color-gray-50: #f4f5f8;
+	--color-gray-100: #e6e8ed;
+	--color-gray-200: #cdd0d8;
+	--color-gray-300: #aaafba;
+	--color-gray-400: #8a8f9a;
+	--color-gray-500: #747985;
+	--color-gray-600: #626771;
+	color: var(--gravity-text-primary);
+	border: 1px solid rgb(255 255 255 / 0.09);
+	border-radius: 1.15rem;
+	background:
+		linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 48%), rgb(29 30 33 / 0.94);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.045),
+		0 1.1rem 3.5rem rgb(0 0 0 / 0.3),
+		0 0 5rem rgb(29 66 175 / 0.08);
+	backdrop-filter: blur(1.4rem) saturate(110%);
+	-webkit-backdrop-filter: blur(1.4rem) saturate(110%);
+}
+
+html.gravity-eclipse .chat-welcome-composer::before {
+	inset: -6rem -10rem;
+	background: radial-gradient(
+		closest-side,
+		rgb(62 112 236 / 0.3),
+		rgb(29 57 151 / 0.12) 56%,
+		transparent 82%
+	);
+	filter: blur(2.8rem);
+	animation: eclipse-composer-glow 9s ease-in-out infinite alternate;
+}
+
+@keyframes eclipse-composer-glow {
+	from {
+		opacity: 0.55;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+html.gravity-eclipse .chat-welcome .message-composer:hover,
+html.gravity-eclipse .chat-welcome .message-composer:focus-within {
+	border-color: rgb(134 157 234 / 0.26);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.06),
+		0 1.1rem 3.5rem rgb(0 0 0 / 0.34),
+		0 0 0 1px rgb(73 105 208 / 0.08),
+		0 0 5rem rgb(38 76 193 / 0.13);
+}
+
+html.gravity-eclipse .chat-welcome .message-composer .input-prose {
+	--tw-prose-body: #eeeff3;
+	--tw-prose-headings: #eeeff3;
+	--tw-prose-bold: #ffffff;
+	--tw-prose-counters: #cdd0d8;
+	--tw-prose-bullets: #cdd0d8;
+	color: #eeeff3;
+}
+
+html.gravity-eclipse .chat-welcome .message-composer .ProseMirror,
+html.gravity-eclipse .chat-welcome .message-composer .ProseMirror :where(p, li, span) {
+	color: #eeeff3;
+}
+
+html.gravity-eclipse .chat-welcome .ProseMirror p.is-editor-empty:first-child::before {
+	color: #858a95;
+}
+
+html.gravity-eclipse .chat-welcome .message-composer [id$='send-message-button']:not(:disabled) {
+	background: #4f70d9;
+	color: #ffffff;
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.16),
+		0 0.3rem 1rem rgb(22 44 116 / 0.3);
+}
+
+html.gravity-eclipse
+	.chat-welcome
+	.message-composer
+	[id$='send-message-button']:not(:disabled):hover {
+	background: #5b7be2;
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.2),
+		0 0.4rem 1.2rem rgb(22 44 116 / 0.4);
+}
+
+/* Restore the stock suggestion list: a scrolling stack of plain rows. */
+html.gravity-eclipse .suggestion-frame {
+	height: 9rem;
+	min-height: 0;
+}
+
+html.gravity-eclipse .suggestion-list {
+	display: block;
+	max-height: 9rem;
+	overflow: auto;
+	padding: 0;
+}
+
+html.gravity-eclipse .suggestion-card,
+html.gravity-eclipse .chat-welcome .suggestion-card {
+	position: static;
+	min-height: 0;
+	gap: 0;
+	padding: 0.375rem 0.625rem;
+	border: 0;
+	border-radius: 0.5rem;
+	background: transparent;
+	box-shadow: none;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card::before {
+	content: none;
+	display: none;
+}
+
+html.gravity-eclipse .suggestion-card:hover,
+html.gravity-eclipse .suggestion-card:focus-visible,
+html.gravity-eclipse .chat-welcome .suggestion-card:hover,
+html.gravity-eclipse .chat-welcome .suggestion-card:focus-visible {
+	border-color: transparent;
+	background: transparent;
+	box-shadow: none;
+	transform: none;
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card .text-sm {
+	color: var(--color-gray-300);
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card .text-xs {
+	color: var(--color-gray-400);
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card:hover .text-sm,
+html.gravity-eclipse .chat-welcome .suggestion-card:focus-visible .text-sm {
+	color: var(--color-gray-50);
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card:hover .text-xs,
+html.gravity-eclipse .chat-welcome .suggestion-card:focus-visible .text-xs {
+	color: var(--color-gray-100);
+}
+
+html.gravity-eclipse .chat-welcome-suggestions div:has(> h3),
+html.gravity-eclipse .chat-welcome-suggestions .self-start {
+	color: var(--color-gray-400);
+}
+
 html.gravity.high-contrast .chat-welcome-title {
 	background: none;
 	color: var(--color-gray-50);
@@ -1596,9 +1845,18 @@ html.gravity.high-contrast
 	html.gravity .suggestion-card {
 		min-height: 3.25rem;
 	}
+
+	html.gravity-eclipse .suggestion-card,
+	html.gravity-eclipse .chat-welcome .suggestion-card {
+		min-height: 0;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
+	html.gravity-eclipse .chat-welcome-composer::before {
+		animation: none;
+	}
+
 	html.gravity .suggestion-card {
 		transition: none;
 	}

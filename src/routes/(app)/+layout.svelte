@@ -47,6 +47,7 @@
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
 	import GravityBackground from '$lib/components/layout/GravityBackground.svelte';
 	import GravityCurrentBackground from '$lib/components/layout/GravityCurrentBackground.svelte';
+	import GravityEclipseBackground from '$lib/components/layout/GravityEclipseBackground.svelte';
 	import GravityFlowBackground from '$lib/components/layout/GravityFlowBackground.svelte';
 	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
@@ -490,6 +491,7 @@
 		<GravityBackground />
 		<GravityFlowBackground />
 		<GravityCurrentBackground />
+		<GravityEclipseBackground />
 		<div
 			class="app-shell text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 h-screen max-h-[100dvh] overflow-auto flex flex-row justify-end"
 		>
