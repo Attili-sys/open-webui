@@ -110,7 +110,7 @@
 		contain: strict;
 	}
 
-	:global(html.gravity-flow) .gravity-flow-atmosphere {
+	:global(html.gravity-flow:not(.gravity-field)) .gravity-flow-atmosphere {
 		display: block;
 	}
 

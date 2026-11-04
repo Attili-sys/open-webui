@@ -2,7 +2,7 @@
 	import Fuse from 'fuse.js';
 	import Bolt from '$lib/components/icons/Bolt.svelte';
 	import { getContext } from 'svelte';
-	import { settings, WEBUI_NAME } from '$lib/stores';
+	import { settings, theme, WEBUI_NAME } from '$lib/stores';
 	import { WEBUI_VERSION } from '$lib/constants';
 
 	const i18n = getContext('i18n');
@@ -27,7 +27,7 @@
 
 	// Update the filteredPrompts if inputValue changes
 	// Only increase version if something wirklich geändert hat
-	$: if (fuse) getFilteredPrompts(inputValue);
+	$: if (fuse) getFilteredPrompts(inputValue, $theme);
 
 	// Compare objects so translated text refreshes even when IDs stay the same.
 	function arraysEqual(a, b) {
@@ -40,8 +40,11 @@
 		return true;
 	}
 
-	const getFilteredPrompts = (inputValue) => {
-		if (inputValue.length > 500) {
+	const getFilteredPrompts = (inputValue, activeTheme) => {
+		// Gravity themes clear the grid as soon as the user starts typing.
+		if (activeTheme?.startsWith('gravity') && inputValue.trim()) {
+			if (filteredPrompts.length) filteredPrompts = [];
+		} else if (inputValue.length > 500) {
 			filteredPrompts = [];
 		} else {
 			const newFilteredPrompts =
@@ -57,8 +60,21 @@
 		}
 	};
 
+	const promptKey = (prompt) => prompt.id || prompt.content;
+	let promptSetKey = '';
+
+	// Parents rebuild this array on unrelated store updates; only reshuffle when the set itself
+	// changes, otherwise keep the order and swap in the fresh (possibly re-translated) objects.
 	$: if (suggestionPrompts) {
-		sortedPrompts = [...(suggestionPrompts ?? [])].sort(() => Math.random() - 0.5);
+		const prompts = suggestionPrompts ?? [];
+		const nextKey = prompts.map(promptKey).join('\u0000');
+		if (nextKey !== promptSetKey) {
+			promptSetKey = nextKey;
+			sortedPrompts = [...prompts].sort(() => Math.random() - 0.5);
+		} else {
+			const byKey = new Map(prompts.map((prompt) => [promptKey(prompt), prompt]));
+			sortedPrompts = sortedPrompts.map((prompt) => byKey.get(promptKey(prompt)) ?? prompt);
+		}
 	}
 </script>
 

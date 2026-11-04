@@ -1301,8 +1301,10 @@ html.gravity-flow .chat-welcome .message-composer [id$='send-message-button']:no
 	box-shadow: none;
 }
 
+/* Reserve two card rows so the hero doesn't shift when typing hides the suggestions. */
 html.gravity .suggestion-frame {
 	height: auto;
+	min-height: 12.25rem;
 }
 
 html.gravity .suggestion-list {
@@ -1573,13 +1575,22 @@ html.gravity.high-contrast
 	-webkit-backdrop-filter: none;
 }
 
-html.gravity.high-contrast :is(.gravity-atmosphere__canvas, .gravity-flow-atmosphere__canvas) {
+html.gravity.high-contrast
+	:is(
+		.gravity-atmosphere__canvas,
+		.gravity-flow-atmosphere__canvas,
+		.gravity-current-atmosphere__canvas
+	) {
 	display: none;
 }
 
 @media (max-width: 48rem) {
 	html.gravity .suggestion-list {
 		grid-template-columns: 1fr;
+	}
+
+	html.gravity .suggestion-frame {
+		min-height: 0;
 	}
 
 	html.gravity .suggestion-card {

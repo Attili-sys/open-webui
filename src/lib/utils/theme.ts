@@ -4,7 +4,8 @@ export const APP_THEME_CLASSES = [
 	'oled-dark',
 	'her',
 	'gravity',
-	'gravity-flow'
+	'gravity-flow',
+	'gravity-field'
 ] as const;
 
 export const THEME_GRAY_PROPERTIES = [
@@ -99,6 +100,16 @@ export const resolveAppTheme = (theme: string, prefersDark = false): AppThemeRes
 	if (theme === 'gravity-flow') {
 		return {
 			classes: ['dark', 'gravity', 'gravity-flow'],
+			isDark: true,
+			metaColor: '#050c18',
+			grayPalette: null
+		};
+	}
+
+	// Gravity Field keeps the complete Gravity Flow UI and replaces only its background renderer.
+	if (theme === 'gravity-field') {
+		return {
+			classes: ['dark', 'gravity', 'gravity-flow', 'gravity-field'],
 			isDark: true,
 			metaColor: '#050c18',
 			grayPalette: null
