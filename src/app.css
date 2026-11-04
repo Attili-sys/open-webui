@@ -1287,6 +1287,20 @@ html.gravity .message-composer [id$='send-message-button']:not(:disabled):hover 
 		0 0.45rem 1.6rem rgb(48 140 255 / 0.44);
 }
 
+/* Gravity Flow: ink send button on the frosted composer. The inherited cyan gradient fights the glass. */
+html.gravity-flow .chat-welcome .message-composer [id$='send-message-button']:not(:disabled) {
+	background: #16304f;
+	color: #f7faff;
+	box-shadow: none;
+	filter: none;
+}
+
+html.gravity-flow .chat-welcome .message-composer [id$='send-message-button']:not(:disabled):hover {
+	background: #1d3d64;
+	filter: none;
+	box-shadow: none;
+}
+
 html.gravity .suggestion-frame {
 	height: auto;
 }
@@ -1559,7 +1573,7 @@ html.gravity.high-contrast
 	-webkit-backdrop-filter: none;
 }
 
-html.gravity.high-contrast :is(.gravity-atmosphere__canvas) {
+html.gravity.high-contrast :is(.gravity-atmosphere__canvas, .gravity-flow-atmosphere__canvas) {
 	display: none;
 }
 

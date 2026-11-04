@@ -41,6 +41,15 @@ describe('resolveAppTheme', () => {
 		});
 	});
 
+	it('layers Gravity Flow on top of the Gravity classes', () => {
+		expect(resolveAppTheme('gravity-flow')).toEqual({
+			classes: ['dark', 'gravity', 'gravity-flow'],
+			isDark: true,
+			metaColor: '#050c18',
+			grayPalette: null
+		});
+	});
+
 	it('resolves the system theme from the current color-scheme preference', () => {
 		expect(resolveAppTheme('system', false).classes).toEqual(['light']);
 		expect(resolveAppTheme('system', true).classes).toEqual(['dark']);
@@ -58,6 +67,16 @@ describe('applyAppTheme', () => {
 		expect([...themeDocument.classes]).toEqual(['dark', 'gravity']);
 		expect(themeDocument.properties.size).toBe(0);
 		expect(themeDocument.metaColor).toBe('#050c18');
+	});
+
+	it('drops the Gravity Flow class when switching back to plain Gravity', () => {
+		const themeDocument = createThemeDocument();
+
+		applyAppTheme('gravity-flow', themeDocument);
+		expect([...themeDocument.classes]).toEqual(['dark', 'gravity', 'gravity-flow']);
+
+		applyAppTheme('gravity', themeDocument);
+		expect([...themeDocument.classes]).toEqual(['dark', 'gravity']);
 	});
 
 	it('applies the OLED palette and replaces it when switching to light', () => {

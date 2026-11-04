@@ -186,6 +186,7 @@
 					<option value="dark">🌑 {$i18n.t('Dark')}</option>
 					<option value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
 					<option value="gravity">🌌 {$i18n.t('Gravity')}</option>
+					<option value="gravity-flow">🌊 {$i18n.t('Gravity Flow')}</option>
 					<option value="light">☀️ {$i18n.t('Light')}</option>
 					{#if $config?.features?.enable_easter_eggs}
 						<option value="her">🌷 Her</option>

@@ -71,6 +71,9 @@
 					document.documentElement.style.setProperty('--color-gray-950', '#000000');
 					document.documentElement.classList.add('dark');
 					metaThemeColorTag.setAttribute('content', '#000000');
+				} else if (localStorage.theme === 'gravity-flow') {
+					document.documentElement.classList.add('dark', 'gravity', 'gravity-flow');
+					metaThemeColorTag.setAttribute('content', '#050c18');
 				} else if (localStorage.theme === 'gravity') {
 					document.documentElement.classList.add('dark', 'gravity');
 					metaThemeColorTag.setAttribute('content', '#050c18');

@@ -1,4 +1,11 @@
-export const APP_THEME_CLASSES = ['dark', 'light', 'oled-dark', 'her', 'gravity'] as const;
+export const APP_THEME_CLASSES = [
+	'dark',
+	'light',
+	'oled-dark',
+	'her',
+	'gravity',
+	'gravity-flow'
+] as const;
 
 export const THEME_GRAY_PROPERTIES = [
 	'--color-gray-800',
@@ -82,6 +89,16 @@ export const resolveAppTheme = (theme: string, prefersDark = false): AppThemeRes
 	if (theme === 'gravity') {
 		return {
 			classes: ['dark', 'gravity'],
+			isDark: true,
+			metaColor: '#050c18',
+			grayPalette: null
+		};
+	}
+
+	// Gravity Flow inherits every Gravity style and layers its own `gravity-flow` overrides on top.
+	if (theme === 'gravity-flow') {
+		return {
+			classes: ['dark', 'gravity', 'gravity-flow'],
 			isDark: true,
 			metaColor: '#050c18',
 			grayPalette: null
