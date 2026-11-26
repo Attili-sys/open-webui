@@ -1,0 +1,362 @@
+/*
+ * Overlay-only rules. These replace the Svelte integration: first paint,
+ * native splash takeover, atmosphere, and ID fallbacks so the theme does not
+ * depend on edited Open WebUI source files.
+ */
+
+/*
+ * custom.css is parsed before the deferred loader. Cover that short gap so
+ * Open WebUI cannot paint its hydrated shell before Gravity is ready.
+ * The timeout is a safety valve: a broken loader must not leave a blank app.
+ */
+html:not(.gravity-ready) body::after {
+	content: '';
+	position: fixed;
+	z-index: 2147483647;
+	inset: 0;
+	pointer-events: none;
+	background: #101113;
+	animation: gravity-curtain-failsafe 0s linear 8s forwards;
+}
+
+html.gravity-pearl:not(.gravity-ready) body::after {
+	background: #f7fafd;
+}
+
+@keyframes gravity-curtain-failsafe {
+	to {
+		visibility: hidden;
+	}
+}
+
+html.gravity-eclipse:not(.gravity-pearl),
+html.gravity-eclipse:not(.gravity-pearl) body {
+	background: #101113 !important;
+}
+
+html.gravity-pearl,
+html.gravity-pearl body {
+	background: #f7fafd !important;
+}
+
+html.gravity-eclipse :is(.app, #auth-page) {
+	position: relative;
+	z-index: 1;
+}
+
+html.gravity-eclipse:not(.gravity-pearl) #splash-screen {
+	background: #101113 !important;
+}
+
+html.gravity-pearl #splash-screen {
+	background: #f7fafd !important;
+}
+
+html.gravity-eclipse #splash-screen #logo,
+html.gravity-eclipse #splash-screen #logo-her,
+html.gravity-eclipse #splash-screen img,
+html.gravity-eclipse #progress-background,
+html.gravity-eclipse #progress-bar {
+	display: none !important;
+}
+
+html.gravity .app.relative > div,
+html.gravity .app > div.h-screen {
+	background-color: transparent !important;
+	background-image: none !important;
+}
+
+/*
+ * A locally-built prototype image may still contain the old Svelte Gravity
+ * atmosphere. The overlay is the single background owner; never let both
+ * renderers paint or the blue prototype will cover Eclipse after hydration.
+ */
+html.gravity-eclipse .gravity-atmosphere:not(.gravity-eclipse-atmosphere) {
+	display: none !important;
+}
+
+@media (min-width: 768px) {
+	html.gravity-eclipse-2 #sidebar,
+	html.gravity-eclipse-2 [role='navigation'] {
+		border-color: transparent !important;
+		background: transparent !important;
+		box-shadow: none !important;
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none !important;
+	}
+}
+
+html.gravity-pearl #sidebar :is(a, button) svg,
+html.gravity-pearl .message-composer :is(#input-menu-button, #integration-menu-button) {
+	color: #143044;
+}
+
+html.gravity-eclipse #message-input-container {
+	position: relative;
+}
+
+/*
+ * Conversation view. The field stays. A light charcoal veil dims it so
+ * messages stay readable. Do not use an opaque cover — that looks like
+ * the theme vanished.
+ */
+html.gravity-eclipse:not(.gravity-pearl) .app-shell:not(:has(.chat-welcome))::before {
+	background: rgb(16 17 19 / 0.38);
+}
+
+html.gravity-pearl .app-shell:not(:has(.chat-welcome))::before {
+	background: rgb(247 250 253 / 0.34);
+}
+
+html.gravity-eclipse:not(:has(.chat-welcome)) .gravity-eclipse-atmosphere {
+	opacity: 0.78;
+}
+
+html.gravity-eclipse :is(#chat-container, [role='region']) {
+	background-color: transparent !important;
+	background-image: none !important;
+}
+
+html.gravity-eclipse:not(.gravity-pearl) .message-composer {
+	color: #eeeff3;
+	border: 1px solid rgb(255 255 255 / 0.09);
+	border-radius: 1.15rem;
+	background:
+		linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 48%), rgb(29 30 33 / 0.94);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.045),
+		0 1.1rem 3.5rem rgb(0 0 0 / 0.3);
+	backdrop-filter: blur(1.4rem) saturate(110%);
+	-webkit-backdrop-filter: blur(1.4rem) saturate(110%);
+}
+
+html.gravity-eclipse:not(.gravity-pearl) .message-composer:hover,
+html.gravity-eclipse:not(.gravity-pearl) .message-composer:focus-within {
+	border-color: rgb(134 157 234 / 0.26);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.06),
+		0 1.1rem 3.5rem rgb(0 0 0 / 0.34),
+		0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+html.gravity-eclipse:not(.gravity-pearl) .message-composer .ProseMirror,
+html.gravity-eclipse:not(.gravity-pearl) .message-composer .ProseMirror :where(p, li, span) {
+	color: #eeeff3;
+}
+
+html.gravity-eclipse:not(.gravity-pearl) .message-composer .ProseMirror p.is-editor-empty:first-child::before {
+	color: #858a95;
+}
+
+html.gravity-eclipse:not(.gravity-pearl) .user-message-bubble {
+	border: 1px solid rgb(255 255 255 / 0.08);
+	background:
+		linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 55%), rgb(29 30 33 / 0.88);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.04);
+	color: #eeeff3;
+}
+
+.gravity-eclipse-atmosphere {
+	--eclipse-shift-x: 0px;
+	--eclipse-shift-y: 0px;
+	position: fixed !important;
+	inset: 0;
+	z-index: 0;
+	display: block;
+	overflow: hidden;
+	pointer-events: none;
+	background:
+		radial-gradient(ellipse 76% 66% at 57% 51%, rgb(13 25 70 / 0.28), transparent 65%),
+		linear-gradient(120deg, #111214 0%, #0d0e10 46%, #101113 100%);
+	contain: strict;
+}
+
+html.gravity-pearl .gravity-eclipse-atmosphere {
+	background: linear-gradient(120deg, #f7fafd, #e7f1f8);
+}
+
+html.gravity-pearl .gravity-eclipse-atmosphere::after {
+	background: none;
+}
+
+html.gravity-eclipse.high-contrast .gravity-eclipse-atmosphere {
+	display: none;
+}
+
+html.gravity-booting .gravity-eclipse-atmosphere {
+	z-index: 111;
+}
+
+html.gravity-ready .gravity-eclipse-atmosphere {
+	z-index: 0;
+}
+
+html.eclipse-pearl .pearl,
+html.gravity-pearl .pearl {
+	position: fixed !important;
+	z-index: 60;
+	pointer-events: none;
+}
+
+html.eclipse-pearl .pearl .pearl-hit,
+html.gravity-pearl .pearl .pearl-hit {
+	pointer-events: auto;
+}
+
+.gravity-theme-mode-select-wrap {
+	position: relative;
+	display: inline-flex;
+	max-width: 100%;
+}
+
+.gravity-theme-mode-select-wrap::after {
+	content: '⌄';
+	position: absolute;
+	inset-inline-end: 0.55rem;
+	top: 50%;
+	color: var(--color-gray-400);
+	font-size: 0.75rem;
+	line-height: 1;
+	pointer-events: none;
+	transform: translateY(-58%);
+}
+
+.gravity-theme-mode-select {
+	min-width: 10.5rem;
+	padding-inline-end: 2rem !important;
+}
+
+.gravity-eclipse-atmosphere::after {
+	content: '';
+	position: absolute;
+	z-index: 1;
+	inset: 0;
+	background: radial-gradient(
+		ellipse 62% 55% at 57% 50%,
+		transparent 32%,
+		rgb(0 0 0 / 0.56) 100%
+	);
+}
+
+.gravity-eclipse-atmosphere__halo,
+.gravity-eclipse-atmosphere__core,
+.gravity-eclipse-atmosphere__current,
+.gravity-eclipse-atmosphere__veil {
+	position: absolute;
+	left: calc(57% + var(--eclipse-shift-x));
+	top: calc(53% + var(--eclipse-shift-y));
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	will-change: transform, opacity;
+}
+
+.gravity-eclipse-atmosphere__halo {
+	width: min(78rem, 86vw);
+	aspect-ratio: 2.05 / 1;
+	background: radial-gradient(
+		ellipse,
+		rgb(36 86 214 / 0.42) 0%,
+		rgb(24 62 176 / 0.28) 34%,
+		rgb(12 30 91 / 0.14) 62%,
+		transparent 78%
+	);
+	filter: blur(3.6rem);
+	animation: eclipse-breathe 11s ease-in-out infinite alternate;
+}
+
+.gravity-eclipse-atmosphere__core {
+	width: min(52rem, 58vw);
+	aspect-ratio: 2.2 / 1;
+	background:
+		radial-gradient(ellipse at 42% 48%, rgb(72 122 255 / 0.62), transparent 46%),
+		radial-gradient(ellipse at 70% 56%, rgb(28 68 190 / 0.46), transparent 58%);
+	filter: blur(2.4rem);
+	animation: eclipse-drift 17s ease-in-out infinite alternate;
+}
+
+.gravity-eclipse-atmosphere__current {
+	width: min(28rem, 34vw);
+	aspect-ratio: 1.7 / 1;
+	background: radial-gradient(
+		ellipse,
+		rgb(126 164 255 / 0.72) 0%,
+		rgb(62 108 245 / 0.34) 42%,
+		transparent 72%
+	);
+	filter: blur(1.8rem);
+	animation: eclipse-current 13s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+}
+
+.gravity-eclipse-atmosphere__canvas {
+	position: absolute;
+	z-index: 2;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.gravity-eclipse-atmosphere__veil {
+	width: min(70rem, 76vw);
+	aspect-ratio: 2.35 / 1;
+	border: 1px solid rgb(110 146 240 / 0.08);
+	box-shadow:
+		0 0 5rem rgb(42 86 210 / 0.16),
+		inset 0 0 6rem rgb(70 112 235 / 0.1);
+	filter: blur(0.8rem);
+	animation: eclipse-veil 19s ease-in-out infinite alternate;
+}
+
+.gravity-eclipse-atmosphere.is-paused :is(div) {
+	animation-play-state: paused;
+}
+
+@keyframes eclipse-breathe {
+	from {
+		opacity: 0.62;
+		transform: translate(-50%, -50%) scale(0.94);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.06);
+	}
+}
+
+@keyframes eclipse-drift {
+	from {
+		opacity: 0.48;
+		transform: translate(-58%, -46%) scale(0.94);
+	}
+	to {
+		opacity: 0.92;
+		transform: translate(-42%, -54%) scale(1.08);
+	}
+}
+
+@keyframes eclipse-current {
+	from {
+		opacity: 0.28;
+		transform: translate(-92%, -58%) scale(0.86);
+	}
+	to {
+		opacity: 0.86;
+		transform: translate(-18%, -42%) scale(1.12);
+	}
+}
+
+@keyframes eclipse-veil {
+	from {
+		opacity: 0.35;
+	}
+	to {
+		opacity: 0.8;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gravity-eclipse-atmosphere__halo,
+	.gravity-eclipse-atmosphere__core,
+	.gravity-eclipse-atmosphere__current,
+	.gravity-eclipse-atmosphere__veil {
+		animation: none;
+	}
+}

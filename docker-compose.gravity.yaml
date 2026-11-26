@@ -1,0 +1,30 @@
+# Local development: official Open WebUI image with the Gravity overlay mounted read-only.
+# Edit gravity-theme/, run `node gravity-theme/scripts/build.mjs`, then refresh the browser.
+# For deployments, build gravity-theme/Dockerfile instead of mounting files.
+name: open-webui
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG:-v0.13.3}
+    container_name: open-webui
+    volumes:
+      - open-webui:/app/backend/data
+      - ./gravity-theme/custom.css:/app/build/static/custom.css:ro
+      - ./gravity-theme/loader.js:/app/build/static/loader.js:ro
+      - ./gravity-theme/custom.css:/app/backend/open_webui/static/custom.css:ro
+      - ./gravity-theme/loader.js:/app/backend/open_webui/static/loader.js:ro
+      - ./gravity-theme/assets:/app/build/static/gravity:ro
+      - ./gravity-theme/assets:/app/backend/open_webui/static/gravity:ro
+    ports:
+      - ${OPEN_WEBUI_PORT:-8080}:8080
+    environment:
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-}
+      - ENABLE_KNOWLEDGE_FILE_RETENTION=true  # removing a file from a knowledge base only unlinks it
+      - BYPASS_ADMIN_ACCESS_CONTROL=false  # admins see only knowledge, models and tools they own or were granted
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+
+volumes:
+  open-webui: {}

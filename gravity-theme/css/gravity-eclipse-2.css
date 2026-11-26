@@ -1,0 +1,1833 @@
+/*
+ * Gravity theme
+ *
+ * Keep every override scoped to html.gravity. The gray scale preserves Tailwind's
+ * light-to-dark luminance order so existing text and surface utilities retain
+ * their intended contrast while taking on the blue-black palette.
+ */
+html.gravity {
+	color-scheme: dark;
+
+	--color-gray-50: #f6f9ff;
+	--color-gray-100: #eaf1fc;
+	--color-gray-200: #d7e3f4;
+	--color-gray-300: #b9cbe4;
+	--color-gray-400: #91a8ca;
+	--color-gray-500: #8299ba;
+	--color-gray-600: #7189aa;
+	--color-gray-700: #354b68;
+	--color-gray-800: #1c304d;
+	--color-gray-850: #13243d;
+	--color-gray-900: #0b182b;
+	--color-gray-950: #07111f;
+
+	--gravity-bg-deep: #071433;
+	--gravity-bg-base: #0c2a6e;
+	--gravity-bg-surface: rgb(13 30 54 / 0.72);
+	--gravity-bg-elevated: rgb(19 42 73 / 0.82);
+	--gravity-bg-hover: rgb(41 83 133 / 0.3);
+	--gravity-accent: #5aa7ff;
+	--gravity-accent-strong: #2f82f6;
+	--gravity-accent-soft: #8ec5ff;
+	--gravity-accent-glow: rgb(64 151 255 / 0.28);
+	--gravity-accent-ring: rgb(90 167 255 / 0.55);
+	--gravity-text-primary: #f1f6ff;
+	--gravity-text-secondary: #a9bad3;
+	--gravity-text-tertiary: #7186a5;
+	--gravity-ink: #10233f;
+	--gravity-glass-bg: rgb(10 26 49 / 0.64);
+	--gravity-glass-bg-strong: rgb(9 24 45 / 0.84);
+	--gravity-glass-border: rgb(154 202 255 / 0.14);
+	--gravity-glass-highlight: rgb(255 255 255 / 0.08);
+	--gravity-shadow: 0 1.5rem 5rem rgb(0 5 18 / 0.34);
+	--gravity-shadow-soft: 0 0.75rem 2.5rem rgb(0 8 24 / 0.24);
+	--gravity-gradient-canvas: linear-gradient(
+		180deg,
+		#081a52 0%,
+		#0d2873 24%,
+		#1a43a3 46%,
+		#2f62c8 62%,
+		#7da6e8 78%,
+		#d2e2fa 92%,
+		#eef5ff 100%
+	);
+}
+
+html.gravity body {
+	background: var(--gravity-bg-deep);
+	color: var(--gravity-text-primary);
+}
+
+html.gravity .app-shell {
+	position: relative;
+	z-index: 1;
+	background: transparent;
+}
+
+html.gravity .app-shell:not(:has(.chat-welcome))::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: linear-gradient(180deg, rgb(5 12 28 / 0.78) 0%, rgb(6 18 40 / 0.9) 100%);
+}
+
+html.gravity .app-sidebar-panel,
+html.gravity .app-sidebar-rail {
+	background: linear-gradient(180deg, rgb(10 31 92 / 0.78), rgb(8 24 74 / 0.86));
+	border-color: rgb(150 190 255 / 0.16);
+	box-shadow:
+		inset -1px 0 rgb(255 255 255 / 0.05),
+		1rem 0 3rem rgb(2 10 40 / 0.22);
+	backdrop-filter: blur(1.1rem) saturate(130%);
+	-webkit-backdrop-filter: blur(1.1rem) saturate(130%);
+}
+
+html.gravity .app-sidebar-panel .sidebar {
+	background: transparent;
+}
+
+html.gravity .sidebar-bg-gradient-to-t,
+html.gravity .sidebar-bg-gradient-to-b {
+	--tw-gradient-from: rgb(8 26 80 / 0.7);
+}
+
+html.gravity .app-sidebar-new-chat {
+	margin-inline: 0.15rem;
+	border: 1px solid rgb(120 172 255 / 0.85);
+	background: rgb(8 26 82 / 0.55);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.08),
+		0 0 1.1rem rgb(70 140 255 / 0.4);
+}
+
+html.gravity .app-sidebar-new-chat:hover {
+	border-color: rgb(112 180 255 / 0.46);
+	background: linear-gradient(135deg, rgb(47 130 246 / 0.25), rgb(67 151 255 / 0.11));
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.07),
+		0 0 1.5rem var(--gravity-accent-glow);
+}
+
+html.gravity .chat-welcome {
+	position: relative;
+}
+
+html.gravity .chat-welcome-title {
+	background: none;
+	color: #ffffff;
+	-webkit-text-fill-color: #ffffff;
+	font-size: clamp(2rem, 3.3vw, 2.9rem);
+	line-height: 1.12;
+	font-weight: 300;
+	letter-spacing: -0.012em;
+	text-wrap: balance;
+	text-shadow:
+		0 0 1.2rem rgb(8 30 100 / 0.55),
+		0 0.1rem 2.4rem rgb(8 30 100 / 0.45);
+}
+
+html.gravity .chat-welcome-model img {
+	width: 3.4rem;
+	height: 3.4rem;
+	border: 1px solid rgb(255 255 255 / 0.5);
+	box-shadow:
+		0 0 0 0.3rem rgb(120 175 255 / 0.18),
+		0 0 1.6rem rgb(110 175 255 / 0.95),
+		0 0 3.6rem rgb(70 130 255 / 0.6);
+}
+
+html.gravity .message-composer {
+	border-color: var(--gravity-glass-border);
+	background:
+		linear-gradient(145deg, rgb(255 255 255 / 0.08), transparent 42%),
+		linear-gradient(155deg, rgb(17 42 73 / 0.86), rgb(7 23 44 / 0.78));
+	box-shadow:
+		inset 0 1px var(--gravity-glass-highlight),
+		0 1.1rem 3.8rem rgb(0 8 25 / 0.3),
+		0 0 0 1px rgb(51 134 235 / 0.04);
+	backdrop-filter: blur(1.5rem) saturate(138%);
+	-webkit-backdrop-filter: blur(1.5rem) saturate(138%);
+}
+
+html.gravity .message-composer:hover {
+	border-color: rgb(127 190 255 / 0.23);
+}
+
+html.gravity .message-composer:focus-within {
+	border-color: var(--gravity-accent-ring);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.1),
+		0 1.2rem 4rem rgb(0 8 25 / 0.34),
+		0 0 2.4rem var(--gravity-accent-glow);
+}
+
+html.gravity .message-composer [id$='send-message-button']:not(:disabled) {
+	background: linear-gradient(145deg, var(--gravity-accent-soft), var(--gravity-accent-strong));
+	color: #04101f;
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.48),
+		0 0.35rem 1.2rem rgb(31 124 244 / 0.34);
+}
+
+html.gravity .message-composer [id$='send-message-button']:not(:disabled):hover {
+	filter: brightness(1.08);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.58),
+		0 0.45rem 1.6rem rgb(48 140 255 / 0.44);
+}
+
+/* Gravity Flow: ink send button on the frosted composer. The inherited cyan gradient fights the glass. */
+html.gravity-flow .chat-welcome .message-composer [id$='send-message-button']:not(:disabled) {
+	background: #16304f;
+	color: #f7faff;
+	box-shadow: none;
+	filter: none;
+}
+
+html.gravity-flow .chat-welcome .message-composer [id$='send-message-button']:not(:disabled):hover {
+	background: #1d3d64;
+	filter: none;
+	box-shadow: none;
+}
+
+/* Reserve two card rows so the hero doesn't shift when typing hides the suggestions. */
+html.gravity .suggestion-frame {
+	height: auto;
+	min-height: 12.25rem;
+}
+
+html.gravity .suggestion-list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.7rem;
+	max-height: none;
+	overflow: visible;
+	padding: 0.1rem;
+}
+
+html.gravity .suggestion-card {
+	min-height: 4.5rem;
+	border: 1px solid var(--gravity-glass-border);
+	background:
+		linear-gradient(145deg, rgb(255 255 255 / 0.055), transparent 50%), rgb(10 30 56 / 0.45);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+	backdrop-filter: blur(0.85rem);
+	-webkit-backdrop-filter: blur(0.85rem);
+}
+
+html.gravity .suggestion-card:hover,
+html.gravity .suggestion-card:focus-visible {
+	border-color: rgb(105 177 255 / 0.38);
+	background:
+		linear-gradient(145deg, rgb(113 183 255 / 0.1), transparent 54%), rgb(12 38 72 / 0.62);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.06),
+		0 0.75rem 2rem rgb(0 12 35 / 0.2),
+		0 0 1.5rem rgb(42 133 245 / 0.09);
+	transform: translateY(-1px);
+}
+
+html.gravity .chat-welcome .message-composer {
+	--color-gray-50: #07111f;
+	--color-gray-100: #10233f;
+	--color-gray-200: #1a3358;
+	--color-gray-300: #243f6b;
+	--color-gray-400: #31527f;
+	--color-gray-500: #46658f;
+	--color-gray-600: #5d7594;
+	color: var(--gravity-ink);
+	border: 1px solid rgb(255 255 255 / 0.95);
+	border-radius: 1.2rem;
+	background: linear-gradient(180deg, rgb(255 255 255 / 0.86), rgb(228 239 255 / 0.74));
+	box-shadow:
+		inset 0 0 0 1px rgb(140 185 245 / 0.28),
+		inset 0 0 1.6rem rgb(120 170 255 / 0.2),
+		0 0 0 1px rgb(255 255 255 / 0.35),
+		0 0 1.2rem 0.15rem rgb(255 255 255 / 0.6),
+		0 0 3.5rem 0.6rem rgb(190 218 255 / 0.5),
+		0 0 8rem 1.5rem rgb(120 170 255 / 0.34);
+	backdrop-filter: blur(1.3rem) saturate(150%);
+	-webkit-backdrop-filter: blur(1.3rem) saturate(150%);
+}
+
+/* Light pool behind the composer so the halo reads against the blue sky. */
+html.gravity .chat-welcome-composer {
+	position: relative;
+	isolation: isolate;
+}
+
+html.gravity .chat-welcome-composer::before {
+	content: '';
+	position: absolute;
+	inset: -1.5rem -2.5rem;
+	z-index: -1;
+	pointer-events: none;
+	border-radius: 999px;
+	background: radial-gradient(
+		closest-side,
+		rgb(225 238 255 / 0.42),
+		rgb(150 195 255 / 0.18) 60%,
+		transparent
+	);
+	filter: blur(1.25rem);
+}
+
+html.gravity .chat-welcome .message-composer:hover,
+html.gravity .chat-welcome .message-composer:focus-within {
+	border-color: rgb(255 255 255 / 1);
+	box-shadow:
+		inset 0 0 0 1px rgb(120 170 245 / 0.4),
+		inset 0 0 1.8rem rgb(110 165 255 / 0.26),
+		0 0 0 1px rgb(255 255 255 / 0.5),
+		0 0 1.4rem 0.2rem rgb(255 255 255 / 0.75),
+		0 0 4rem 0.8rem rgb(190 218 255 / 0.6),
+		0 0 9rem 2rem rgb(120 170 255 / 0.4);
+}
+
+html.gravity .chat-welcome .message-composer .input-prose {
+	--tw-prose-body: #16304f;
+	--tw-prose-headings: #16304f;
+	--tw-prose-bold: #16304f;
+	--tw-prose-counters: #16304f;
+	--tw-prose-bullets: #16304f;
+	color: #16304f;
+}
+
+html.gravity .chat-welcome .message-composer .ProseMirror,
+html.gravity .chat-welcome .message-composer .ProseMirror :where(p, li, span) {
+	color: #16304f;
+}
+
+html.gravity .chat-welcome .ProseMirror p.is-editor-empty:first-child::before {
+	color: #5d7594;
+}
+
+/* Dark frosted cards with a small leading icon. */
+html.gravity .chat-welcome .suggestion-card {
+	position: relative;
+	min-height: 4.7rem;
+	gap: 0.55rem;
+	padding: 0.85rem 0.95rem;
+	border: 1px solid rgb(190 214 255 / 0.26);
+	border-radius: 0.95rem;
+	background: linear-gradient(155deg, rgb(255 255 255 / 0.075), rgb(255 255 255 / 0.015));
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.1),
+		0 0.5rem 1.4rem rgb(5 25 90 / 0.1);
+	backdrop-filter: blur(0.9rem);
+	-webkit-backdrop-filter: blur(0.9rem);
+}
+
+html.gravity .chat-welcome .suggestion-card::before {
+	content: '';
+	display: block;
+	flex: none;
+	width: 1.05rem;
+	height: 1.05rem;
+	background: rgb(214 230 255 / 0.92);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='16' height='16' rx='3.5'/%3E%3Cpath d='m8.5 12.3 2.5 2.5 4.5-5'/%3E%3C/svg%3E")
+		center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='16' height='16' rx='3.5'/%3E%3Cpath d='m8.5 12.3 2.5 2.5 4.5-5'/%3E%3C/svg%3E")
+		center / contain no-repeat;
+}
+
+html.gravity .chat-welcome .suggestion-card .text-sm {
+	color: #f3f8ff;
+}
+
+html.gravity .chat-welcome .suggestion-card .text-xs {
+	color: #b4c9ee;
+}
+
+html.gravity .chat-welcome .suggestion-card:hover,
+html.gravity .chat-welcome .suggestion-card:focus-visible {
+	border-color: rgb(225 238 255 / 0.55);
+	background: linear-gradient(155deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.05));
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.24),
+		0 0.8rem 2rem rgb(5 25 90 / 0.24),
+		0 0 1.4rem rgb(150 195 255 / 0.22);
+	transform: translateY(-1px);
+}
+
+html.gravity .chat-welcome-suggestions div:has(> h3) {
+	color: rgb(214 228 255 / 0.72);
+}
+
+html.gravity .chat-welcome-suggestions .self-start {
+	color: rgb(255 255 255 / 0.62);
+}
+
+html.gravity .user-message-bubble {
+	border: 1px solid rgb(119 185 255 / 0.12);
+	background:
+		linear-gradient(135deg, rgb(46 117 205 / 0.22), rgb(20 54 95 / 0.56)), var(--gravity-glass-bg);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+}
+
+html.gravity .assistant-message-profile-image,
+html.gravity .user-message-profile-image {
+	border: 1px solid rgb(144 198 255 / 0.2);
+	box-shadow: 0 0 1.2rem rgb(50 139 247 / 0.14);
+}
+
+html.gravity .app-dropdown-menu {
+	border-color: var(--gravity-glass-border);
+	background:
+		linear-gradient(145deg, rgb(255 255 255 / 0.055), transparent 48%),
+		var(--gravity-glass-bg-strong);
+	box-shadow:
+		inset 0 1px var(--gravity-glass-highlight),
+		var(--gravity-shadow-soft);
+	backdrop-filter: blur(1.35rem) saturate(135%);
+	-webkit-backdrop-filter: blur(1.35rem) saturate(135%);
+}
+
+html.gravity .app-modal-surface,
+html.gravity .app-drawer-surface,
+html.gravity .app-notification-toast,
+html.gravity .app-update-toast {
+	border-color: var(--gravity-glass-border);
+	background:
+		linear-gradient(145deg, rgb(255 255 255 / 0.055), transparent 48%),
+		var(--gravity-glass-bg-strong);
+	color: var(--gravity-text-primary);
+	box-shadow:
+		inset 0 1px var(--gravity-glass-highlight),
+		var(--gravity-shadow);
+	backdrop-filter: blur(1.5rem) saturate(125%);
+	-webkit-backdrop-filter: blur(1.5rem) saturate(125%);
+}
+
+html.gravity .modal {
+	background: rgb(1 7 17 / 0.66);
+	backdrop-filter: blur(0.65rem);
+	-webkit-backdrop-filter: blur(0.65rem);
+}
+
+html.gravity .tippy-box[data-theme~='dark'] {
+	border-color: var(--gravity-glass-border);
+	background: var(--gravity-glass-bg-strong);
+	box-shadow: var(--gravity-shadow-soft);
+	backdrop-filter: blur(1rem);
+	-webkit-backdrop-filter: blur(1rem);
+}
+
+html.gravity [data-sonner-toast] {
+	border-color: var(--gravity-glass-border);
+	background: var(--gravity-glass-bg-strong);
+	box-shadow:
+		inset 0 1px var(--gravity-glass-highlight),
+		var(--gravity-shadow-soft);
+	backdrop-filter: blur(1.2rem);
+	-webkit-backdrop-filter: blur(1.2rem);
+}
+
+html.gravity .hljs,
+html.gravity .tiptap pre,
+html.gravity .tiptap pre.hljs,
+html.gravity .cm-editor,
+html.gravity .cm-gutters {
+	background-color: rgb(3 12 25 / 0.82);
+}
+
+html.gravity :where(input, textarea, select, [contenteditable='true'])::placeholder {
+	color: var(--gravity-text-tertiary);
+}
+
+:where(html:not(.native-scrollbars)).gravity ::-webkit-scrollbar-thumb {
+	border-color: rgb(4 14 29 / 0.86);
+	background-color: rgb(101 145 194 / 0.42);
+}
+
+/*
+ * Gravity Eclipse
+ *
+ * A restrained near-black interpretation of the Gravity interface. The broad
+ * cobalt aura is rendered by GravityEclipseBackground; these overrides keep
+ * surfaces quiet so the light field remains the focal point.
+ */
+html.gravity-eclipse {
+	--color-gray-50: #f4f5f8;
+	--color-gray-100: #e5e7ec;
+	--color-gray-200: #ced1d9;
+	--color-gray-300: #aeb2bd;
+	--color-gray-400: #888d99;
+	--color-gray-500: #717681;
+	--color-gray-600: #5d626d;
+	--color-gray-700: #393c43;
+	--color-gray-800: #282a2f;
+	--color-gray-850: #202226;
+	--color-gray-900: #191a1d;
+	--color-gray-950: #101113;
+
+	--gravity-bg-deep: #101113;
+	--gravity-bg-base: #141519;
+	--gravity-bg-surface: rgb(29 30 34 / 0.88);
+	--gravity-bg-elevated: rgb(35 36 41 / 0.94);
+	--gravity-bg-hover: rgb(57 62 76 / 0.32);
+	--gravity-accent: #6e8ff5;
+	--gravity-accent-strong: #4f74e8;
+	--gravity-accent-soft: #91a8f8;
+	--gravity-accent-glow: rgb(57 96 226 / 0.22);
+	--gravity-accent-ring: rgb(103 135 239 / 0.5);
+	--gravity-text-primary: #eeeff3;
+	--gravity-text-secondary: #a8abb4;
+	--gravity-text-tertiary: #777b85;
+	--gravity-ink: #f0f1f4;
+	--gravity-glass-bg: rgb(27 28 32 / 0.88);
+	--gravity-glass-bg-strong: rgb(24 25 29 / 0.96);
+	--gravity-glass-border: rgb(255 255 255 / 0.085);
+	--gravity-glass-highlight: rgb(255 255 255 / 0.055);
+	--gravity-shadow: 0 1.5rem 5rem rgb(0 0 0 / 0.42);
+	--gravity-shadow-soft: 0 0.75rem 2.5rem rgb(0 0 0 / 0.32);
+	--gravity-gradient-canvas: #101113;
+}
+
+html.gravity-eclipse body {
+	background: #101113;
+}
+
+html.gravity-eclipse .app-shell:not(:has(.chat-welcome))::before {
+	background: rgb(15 16 18 / 0.9);
+}
+
+html.gravity-eclipse .app-sidebar-panel,
+html.gravity-eclipse .app-sidebar-rail {
+	border-color: rgb(255 255 255 / 0.065);
+	background: rgb(27 28 31 / 0.96);
+	box-shadow:
+		inset -1px 0 rgb(255 255 255 / 0.025),
+		1rem 0 3rem rgb(0 0 0 / 0.16);
+	backdrop-filter: blur(1.3rem) saturate(105%);
+	-webkit-backdrop-filter: blur(1.3rem) saturate(105%);
+}
+
+html.gravity-eclipse .sidebar-bg-gradient-to-t,
+html.gravity-eclipse .sidebar-bg-gradient-to-b {
+	--tw-gradient-from: rgb(27 28 31 / 0.94);
+}
+
+html.gravity-eclipse .app-sidebar-new-chat {
+	border-color: rgb(255 255 255 / 0.1);
+	background: rgb(255 255 255 / 0.035);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+}
+
+html.gravity-eclipse .app-sidebar-new-chat:hover {
+	border-color: rgb(255 255 255 / 0.15);
+	background: rgb(255 255 255 / 0.065);
+	box-shadow: inset 0 1px rgb(255 255 255 / 0.05);
+}
+
+/*
+ * Gravity Eclipse 2
+ * The sidebar is the same ground as the page, so the field draws through it.
+ * Controls keep their hover. The mobile drawer keeps its surface.
+ */
+@media (min-width: 768px) {
+	html.gravity-eclipse-2 .app-sidebar-panel,
+	html.gravity-eclipse-2 .app-sidebar-rail,
+	html.gravity-eclipse-2 .app-sidebar-rail:hover {
+		border-color: transparent;
+		background: transparent;
+		box-shadow: none;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+	}
+
+	html.gravity-eclipse-2 .app-sidebar-panel > div {
+		border-color: transparent;
+	}
+
+	html.gravity-eclipse-2 .sidebar-bg-gradient-to-t,
+	html.gravity-eclipse-2 .sidebar-bg-gradient-to-b {
+		--tw-gradient-from: transparent;
+		background: none;
+	}
+
+	html.gravity-eclipse-2 .app-sidebar-panel :is(a, button):hover {
+		background-color: rgb(255 255 255 / 0.06);
+	}
+}
+
+html.gravity-eclipse .chat-welcome-title {
+	color: #e9eaf0;
+	-webkit-text-fill-color: #e9eaf0;
+	font-size: clamp(1.85rem, 2.8vw, 2.45rem);
+	font-weight: 350;
+	letter-spacing: -0.022em;
+	text-shadow: 0 0.25rem 2rem rgb(0 0 0 / 0.45);
+}
+
+html.gravity-eclipse .chat-welcome-model img {
+	border-color: rgb(255 255 255 / 0.15);
+	box-shadow:
+		0 0 0 0.2rem rgb(255 255 255 / 0.025),
+		0 0.75rem 2rem rgb(0 0 0 / 0.28);
+}
+
+html.gravity-eclipse .chat-welcome .message-composer {
+	--color-gray-50: #f4f5f8;
+	--color-gray-100: #e6e8ed;
+	--color-gray-200: #cdd0d8;
+	--color-gray-300: #aaafba;
+	--color-gray-400: #8a8f9a;
+	--color-gray-500: #747985;
+	--color-gray-600: #626771;
+	color: var(--gravity-text-primary);
+	border: 1px solid rgb(255 255 255 / 0.09);
+	border-radius: 1.15rem;
+	background:
+		linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 48%), rgb(29 30 33 / 0.94);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.045),
+		0 1.1rem 3.5rem rgb(0 0 0 / 0.3);
+	backdrop-filter: blur(1.4rem) saturate(110%);
+	-webkit-backdrop-filter: blur(1.4rem) saturate(110%);
+}
+
+html.gravity-eclipse .chat-welcome-composer::before {
+	content: none;
+}
+
+html.gravity-eclipse .chat-welcome .message-composer:hover,
+html.gravity-eclipse .chat-welcome .message-composer:focus-within {
+	border-color: rgb(134 157 234 / 0.26);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.06),
+		0 1.1rem 3.5rem rgb(0 0 0 / 0.34),
+		0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+html.gravity-eclipse .chat-welcome .message-composer .input-prose {
+	--tw-prose-body: #eeeff3;
+	--tw-prose-headings: #eeeff3;
+	--tw-prose-bold: #ffffff;
+	--tw-prose-counters: #cdd0d8;
+	--tw-prose-bullets: #cdd0d8;
+	color: #eeeff3;
+}
+
+html.gravity-eclipse .chat-welcome .message-composer .ProseMirror,
+html.gravity-eclipse .chat-welcome .message-composer .ProseMirror :where(p, li, span) {
+	color: #eeeff3;
+}
+
+html.gravity-eclipse .chat-welcome .ProseMirror p.is-editor-empty:first-child::before {
+	color: #858a95;
+}
+
+html.gravity-eclipse .chat-welcome .message-composer [id$='send-message-button']:not(:disabled) {
+	background: #4f70d9;
+	color: #ffffff;
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.16),
+		0 0.3rem 1rem rgb(22 44 116 / 0.3);
+}
+
+html.gravity-eclipse
+	.chat-welcome
+	.message-composer
+	[id$='send-message-button']:not(:disabled):hover {
+	background: #5b7be2;
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.2),
+		0 0.4rem 1.2rem rgb(22 44 116 / 0.4);
+}
+
+/* Restore the stock suggestion list: a scrolling stack of plain rows. */
+html.gravity-eclipse .suggestion-frame {
+	height: 9rem;
+	min-height: 0;
+}
+
+html.gravity-eclipse .suggestion-list {
+	display: block;
+	max-height: 9rem;
+	overflow: auto;
+	padding: 0;
+}
+
+html.gravity-eclipse .suggestion-card,
+html.gravity-eclipse .chat-welcome .suggestion-card {
+	position: static;
+	min-height: 0;
+	gap: 0;
+	padding: 0.375rem 0.625rem;
+	border: 0;
+	border-radius: 0.5rem;
+	background: transparent;
+	box-shadow: none;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card::before {
+	content: none;
+	display: none;
+}
+
+html.gravity-eclipse .suggestion-card:hover,
+html.gravity-eclipse .suggestion-card:focus-visible,
+html.gravity-eclipse .chat-welcome .suggestion-card:hover,
+html.gravity-eclipse .chat-welcome .suggestion-card:focus-visible {
+	border-color: transparent;
+	background: transparent;
+	box-shadow: none;
+	transform: none;
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card .text-sm {
+	color: var(--color-gray-300);
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card .text-xs {
+	color: var(--color-gray-400);
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card:hover .text-sm,
+html.gravity-eclipse .chat-welcome .suggestion-card:focus-visible .text-sm {
+	color: var(--color-gray-50);
+}
+
+html.gravity-eclipse .chat-welcome .suggestion-card:hover .text-xs,
+html.gravity-eclipse .chat-welcome .suggestion-card:focus-visible .text-xs {
+	color: var(--color-gray-100);
+}
+
+html.gravity-eclipse .chat-welcome-suggestions div:has(> h3),
+html.gravity-eclipse .chat-welcome-suggestions .self-start {
+	color: var(--color-gray-400);
+}
+
+/*
+ * Gravity Pearl
+ *
+ * Daylight Al Jazeera reading of Eclipse. The center stays quiet paper.
+ * Teal filaments stay on the sides and the floor.
+ */
+html.gravity-pearl {
+	color-scheme: light;
+
+	--color-gray-50: #f7fafd;
+	--color-gray-100: #e7eef6;
+	--color-gray-200: #d3e0ec;
+	--color-gray-300: #31475d;
+	--color-gray-400: #5c7388;
+	--color-gray-500: #6d8498;
+	--color-gray-600: #4e6578;
+	--color-gray-700: #2c4256;
+	--color-gray-800: #e8f0f7;
+	--color-gray-850: #f3f7fb;
+	--color-gray-900: #f7fafd;
+	--color-gray-950: #ffffff;
+
+	--gravity-bg-deep: #f7fafd;
+	--gravity-bg-base: #f3f7fb;
+	--gravity-bg-surface: rgb(255 255 255 / 0.94);
+	--gravity-bg-elevated: #ffffff;
+	--gravity-bg-hover: rgb(15 127 142 / 0.08);
+	--gravity-accent: #0f7f8e;
+	--gravity-accent-strong: #0c6c79;
+	--gravity-accent-soft: #8fd8e2;
+	--gravity-accent-glow: rgb(15 127 142 / 0.16);
+	--gravity-accent-ring: rgb(15 127 142 / 0.4);
+	--gravity-text-primary: #143044;
+	--gravity-text-secondary: #4e6578;
+	--gravity-text-tertiary: #6d8498;
+	--gravity-ink: #143044;
+	--gravity-glass-bg: rgb(255 255 255 / 0.9);
+	--gravity-glass-bg-strong: rgb(255 255 255 / 0.97);
+	--gravity-glass-border: rgb(19 95 143 / 0.12);
+	--gravity-glass-highlight: rgb(255 255 255 / 0.95);
+	--gravity-shadow: 0 1.25rem 3rem rgb(19 95 143 / 0.12);
+	--gravity-shadow-soft: 0 0.55rem 1.5rem rgb(19 95 143 / 0.08);
+}
+
+html.gravity-pearl body {
+	background: #f7fafd;
+	color: #143044;
+}
+
+html.gravity-pearl .app-shell:not(:has(.chat-welcome))::before {
+	background: linear-gradient(180deg, rgb(247 250 253 / 0.9), rgb(237 243 249 / 0.94));
+}
+
+html.gravity-pearl .app-sidebar-panel,
+html.gravity-pearl .app-sidebar-rail {
+	border-color: rgb(19 95 143 / 0.08);
+	background: rgb(247 250 253 / 0.9);
+	box-shadow: inset -1px 0 rgb(19 95 143 / 0.05);
+}
+
+html.gravity-pearl .sidebar-bg-gradient-to-t,
+html.gravity-pearl .sidebar-bg-gradient-to-b {
+	--tw-gradient-from: rgb(247 250 253 / 0.94);
+}
+
+html.gravity-pearl .app-sidebar-new-chat {
+	border-color: rgb(19 95 143 / 0.16);
+	background: rgb(255 255 255 / 0.72);
+	box-shadow: none;
+}
+
+html.gravity-pearl .app-sidebar-new-chat:hover {
+	border-color: rgb(20 140 156 / 0.4);
+	background: rgb(255 255 255 / 0.92);
+	box-shadow: none;
+}
+
+html.gravity-pearl .message-composer {
+	color: #143044;
+	border-color: rgb(19 95 143 / 0.12);
+	background: rgb(255 255 255 / 0.94);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.95),
+		0 0.8rem 2rem rgb(19 95 143 / 0.08);
+}
+
+html.gravity-pearl .message-composer:hover,
+html.gravity-pearl .message-composer:focus-within {
+	border-color: rgb(15 127 142 / 0.4);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 1),
+		0 0.8rem 2rem rgb(19 95 143 / 0.1);
+}
+
+html.gravity-pearl .message-composer [id$='send-message-button']:not(:disabled) {
+	background: #0f7f8e;
+	color: #ffffff;
+	box-shadow: none;
+	filter: none;
+}
+
+html.gravity-pearl .message-composer [id$='send-message-button']:not(:disabled):hover {
+	background: #0c6c79;
+	filter: none;
+}
+
+html.gravity-pearl .user-message-bubble {
+	border-color: rgb(19 95 143 / 0.1);
+	background: rgb(232 244 248 / 0.9);
+	box-shadow: none;
+	color: #143044;
+}
+
+html.gravity-pearl .assistant-message-profile-image,
+html.gravity-pearl .user-message-profile-image {
+	border-color: rgb(19 95 143 / 0.12);
+	box-shadow: none;
+}
+
+html.gravity-pearl .app-dropdown-menu,
+html.gravity-pearl .app-modal-surface,
+html.gravity-pearl .app-drawer-surface,
+html.gravity-pearl .app-notification-toast,
+html.gravity-pearl .app-update-toast,
+html.gravity-pearl [data-sonner-toast],
+html.gravity-pearl .tippy-box {
+	border-color: rgb(19 95 143 / 0.12);
+	background: rgb(255 255 255 / 0.97);
+	color: #143044;
+	box-shadow: 0 0.8rem 2rem rgb(19 95 143 / 0.12);
+}
+
+html.gravity-pearl .modal {
+	background: rgb(20 48 68 / 0.28);
+}
+
+html.gravity-pearl .hljs,
+html.gravity-pearl .tiptap pre,
+html.gravity-pearl .tiptap pre.hljs,
+html.gravity-pearl .cm-editor,
+html.gravity-pearl .cm-gutters {
+	background-color: #f4f8fb;
+	color: #143044;
+}
+
+:where(html:not(.native-scrollbars)).gravity-pearl ::-webkit-scrollbar-thumb {
+	border-color: rgb(247 250 253 / 0.9);
+	background-color: rgb(120 156 176 / 0.45);
+}
+
+html.gravity-pearl .chat-welcome-title {
+	color: #143044;
+	-webkit-text-fill-color: #143044;
+	font-weight: 360;
+	text-shadow: none;
+}
+
+html.gravity-pearl .chat-welcome-model img {
+	border-color: rgb(255 255 255 / 0.95);
+	box-shadow: 0 0.6rem 1.6rem rgb(19 95 143 / 0.12);
+}
+
+html.gravity-pearl .chat-welcome .message-composer {
+	--color-gray-50: #143044;
+	--color-gray-100: #1d3c56;
+	--color-gray-200: #31506a;
+	--color-gray-300: #4d6880;
+	--color-gray-400: #6a8296;
+	--color-gray-500: #7d93a6;
+	--color-gray-600: #5e7588;
+	color: #143044;
+	border: 1px solid rgb(19 95 143 / 0.12);
+	background: rgb(255 255 255 / 0.9);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 0.9),
+		0 1rem 2.4rem rgb(19 95 143 / 0.08);
+}
+
+html.gravity-pearl .chat-welcome .message-composer:hover,
+html.gravity-pearl .chat-welcome .message-composer:focus-within {
+	border-color: rgb(20 150 166 / 0.45);
+	box-shadow:
+		inset 0 1px rgb(255 255 255 / 1),
+		0 1rem 2.4rem rgb(19 95 143 / 0.1);
+}
+
+html.gravity-pearl .chat-welcome .message-composer .input-prose {
+	--tw-prose-body: #143044;
+	--tw-prose-headings: #143044;
+	--tw-prose-bold: #10283c;
+	--tw-prose-counters: #4e6578;
+	--tw-prose-bullets: #4e6578;
+	color: #143044;
+}
+
+html.gravity-pearl .chat-welcome .message-composer .ProseMirror,
+html.gravity-pearl .chat-welcome .message-composer .ProseMirror :where(p, li, span) {
+	color: #143044;
+}
+
+html.gravity-pearl .chat-welcome .ProseMirror p.is-editor-empty:first-child::before {
+	color: #6d8498;
+}
+
+html.gravity-pearl .chat-welcome .message-composer [id$='send-message-button']:not(:disabled) {
+	background: #0f7f8e;
+	color: #ffffff;
+	box-shadow: none;
+}
+
+html.gravity-pearl
+	.chat-welcome
+	.message-composer
+	[id$='send-message-button']:not(:disabled):hover {
+	background: #0c6c79;
+	box-shadow: none;
+}
+
+html.gravity-pearl .chat-welcome .suggestion-card .text-sm,
+html.gravity-pearl .chat-welcome .suggestion-card:hover .text-sm,
+html.gravity-pearl .chat-welcome .suggestion-card:focus-visible .text-sm {
+	color: #1c3a52;
+}
+
+html.gravity-pearl .chat-welcome .suggestion-card .text-xs,
+html.gravity-pearl .chat-welcome .suggestion-card:hover .text-xs,
+html.gravity-pearl .chat-welcome .suggestion-card:focus-visible .text-xs {
+	color: #5c7388;
+}
+
+html.gravity-pearl .chat-welcome-suggestions div:has(> h3),
+html.gravity-pearl .chat-welcome-suggestions .self-start {
+	color: #5c7388;
+}
+
+/* Pearl: the daylight field, plus the orb that appears and glides home. */
+:is(html.gravity-pearl, html.eclipse-pearl) {
+	--pl-sine: cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .chat-welcome,
+:is(html.gravity-pearl, html.eclipse-pearl) .chat-welcome-heading,
+:is(html.gravity-pearl, html.eclipse-pearl) .chat-welcome-hero,
+:is(html.gravity-pearl, html.eclipse-pearl) .chat-welcome-model {
+	overflow: visible;
+}
+
+html.gravity-pearl .chat-welcome::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		radial-gradient(
+			ellipse 48% 38% at 61% 23%,
+			rgb(73 205 211 / 0.2),
+			rgb(110 190 225 / 0.1) 44%,
+			transparent 74%
+		),
+		radial-gradient(ellipse 54% 45% at 39% 5%, rgb(128 180 236 / 0.13), transparent 70%);
+	filter: blur(1.25rem);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .chat-welcome-model button {
+	display: none;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-anchor {
+	--pearl: 11rem;
+	display: block;
+	width: var(--pearl);
+	height: var(--pearl);
+	flex: none;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl {
+	--pearl: 11rem;
+	--pl-sine: cubic-bezier(0.37, 0, 0.63, 1);
+	--fx: 0px;
+	--fy: 0px;
+	position: relative;
+	z-index: 5;
+	display: inline-block;
+	width: var(--pearl);
+	height: var(--pearl);
+	isolation: isolate;
+	flex: none;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl > :where(i) {
+	position: absolute;
+	inset: 0;
+	display: block;
+	pointer-events: none;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-current {
+	z-index: -1;
+	inset: -18%;
+	opacity: 0.46;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-current::before,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-current::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-current::before {
+	background:
+		radial-gradient(30% 30% at 50% 26%, rgb(84 204 216 / 0.3), transparent 72%),
+		radial-gradient(26% 26% at 50% 76%, rgb(150 220 240 / 0.22), transparent 72%);
+	animation: pearl-turn 18s linear infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-current::after {
+	background:
+		radial-gradient(28% 28% at 75% 50%, rgb(110 165 240 / 0.24), transparent 72%),
+		radial-gradient(24% 24% at 26% 44%, rgb(84 204 216 / 0.2), transparent 72%);
+	animation: pearl-turn 26s linear infinite reverse;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-aura {
+	z-index: -1;
+	inset: -18%;
+	border-radius: 50%;
+	opacity: 0.9;
+	filter: blur(calc(var(--pearl) * 0.045));
+	background: radial-gradient(
+		circle closest-side,
+		transparent 46%,
+		rgb(150 224 236 / 0.55) 58%,
+		rgb(120 205 228 / 0.22) 72%,
+		transparent 82%
+	);
+	animation:
+		pearl-breathe 10s var(--pl-sine) infinite alternate,
+		pearl-drift 14s var(--pl-sine) infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-glow {
+	z-index: 2;
+	inset: 26.5%;
+	border-radius: 50%;
+	background: transparent;
+	box-shadow:
+		inset 0 0 0 1px rgb(255 255 255 / 0.92),
+		0 0 0 1px rgb(214 246 252 / 0.95),
+		0 0 0.7rem 0.15rem rgb(126 214 230 / 0.55),
+		0 0 1.6rem 0.45rem rgb(150 216 232 / 0.28);
+	animation: pearl-beat-glow 3.4s var(--pl-sine) infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-bloom {
+	z-index: -1;
+	inset: 8%;
+	border-radius: 50%;
+	opacity: 0;
+	background: radial-gradient(circle, rgb(84 204 216 / 0.16), transparent 68%);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-ripples {
+	z-index: 1;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-ripples b {
+	position: absolute;
+	inset: 27.6%;
+	border-radius: 50%;
+	opacity: 0;
+	background: radial-gradient(
+		closest-side,
+		transparent 50%,
+		rgb(120 214 230 / 0.4) 75%,
+		rgb(150 220 238 / 0.26) 89%,
+		transparent 100%
+	);
+	animation: pearl-beat-wave 3.4s cubic-bezier(0.3, 0.2, 0.35, 1) infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-ripples b + b {
+	display: none;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-ripples b + b + b {
+	display: none;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-halo,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-core {
+	background: var(--pearl-image) 50% center / cover no-repeat;
+	border-radius: 50%;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-halo {
+	z-index: 2;
+	filter: saturate(1.15);
+	mask: radial-gradient(circle closest-side, transparent 45.5%, #000 47%, #000 51%, transparent 53%);
+	animation:
+		pearl-turn-halo 60s linear infinite,
+		pearl-halo-flow 5s var(--pl-sine) infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-halo-b {
+	opacity: 0.45;
+	filter: blur(1.5px) saturate(1.2);
+	scale: 1.03;
+	animation:
+		pearl-turn-halo-b 80s linear infinite,
+		pearl-halo-flow-b 5s var(--pl-sine) infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-core {
+	z-index: 3;
+	filter: saturate(1.08) contrast(1.06);
+	mask: radial-gradient(circle closest-side, #000 45.6%, transparent 46.4%);
+	animation:
+		pearl-float 7s var(--pl-sine) infinite alternate,
+		pearl-beat-core 3.4s var(--pl-sine) infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow2 {
+	z-index: 4;
+	inset: 27.6%;
+	overflow: hidden;
+	border-radius: 50%;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow {
+	mix-blend-mode: multiply;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow2 {
+	mix-blend-mode: screen;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow2 {
+	opacity: 0.58;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow::before,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow::after,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow2::before {
+	content: '';
+	position: absolute;
+	inset: -30%;
+	border-radius: 50%;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow::before {
+	background:
+		radial-gradient(34% 34% at 30% 34%, rgb(120 214 228 / 0.6), transparent 72%),
+		radial-gradient(36% 36% at 72% 64%, rgb(140 170 240 / 0.55), transparent 72%),
+		radial-gradient(28% 28% at 60% 22%, rgb(206 186 240 / 0.42), transparent 72%);
+	animation: pearl-turn 9s linear infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow::after {
+	background:
+		radial-gradient(30% 30% at 66% 30%, rgb(150 224 240 / 0.5), transparent 72%),
+		radial-gradient(32% 32% at 32% 72%, rgb(110 200 220 / 0.5), transparent 72%);
+	animation:
+		pearl-turn 13s linear infinite reverse,
+		pearl-wander 7s var(--pl-sine) infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-flow2::before {
+	background:
+		radial-gradient(26% 26% at 40% 40%, rgb(255 255 255 / 0.35), transparent 70%),
+		radial-gradient(22% 22% at 66% 62%, rgb(190 240 246 / 0.35), transparent 70%);
+	animation: pearl-liquid 7s var(--pl-sine) infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-sheen {
+	z-index: 5;
+	inset: 27.6%;
+	border-radius: 50%;
+	opacity: 0.9;
+	mix-blend-mode: screen;
+	background:
+		radial-gradient(circle at 42% 32%, rgb(255 255 255 / 0.95) 0 7%, transparent 28%),
+		radial-gradient(circle at 58% 62%, rgb(190 230 245 / 0.35), transparent 42%);
+	animation:
+		pearl-glint 12s var(--pl-sine) infinite,
+		pearl-spec 8s var(--pl-sine) infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-touch,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-touch-in {
+	border-radius: 50%;
+	opacity: 0;
+	transition: opacity 0.6s var(--pl-sine);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-touch {
+	z-index: 0;
+	background: radial-gradient(
+		circle at var(--mx, 50%) var(--my, 50%),
+		#ffe2cccc,
+		#f4cce46b 20%,
+		#ffe2cc00 46%
+	);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-touch-in {
+	z-index: 5;
+	inset: 27.6%;
+	overflow: hidden;
+	mix-blend-mode: screen;
+	background: radial-gradient(
+		circle at var(--ix, 50%) var(--iy, 50%),
+		#ffeee0e6,
+		#f2cee866 28%,
+		#ffeee000 58%
+	);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl.is-touch .pearl-touch,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl.is-touch .pearl-touch-in {
+	opacity: 1;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-hit {
+	position: absolute;
+	z-index: 6;
+	inset: 27.6%;
+	border: 0;
+	padding: 0;
+	border-radius: 50%;
+	background: transparent;
+	pointer-events: auto;
+	cursor: default;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl.is-pulse .pearl-core,
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl.is-pulse .pearl-glow {
+	animation: pearl-pop 0.6s var(--pl-sine);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-pool {
+	position: fixed;
+	z-index: 0;
+	width: 16rem;
+	height: 16rem;
+	border-radius: 50%;
+	filter: blur(2.2rem);
+	pointer-events: none;
+	opacity: 0.55;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-pool-a {
+	top: -5rem;
+	left: -4rem;
+	background: rgb(84 204 216 / 0.16);
+}
+
+html.gravity-eclipse-2 .pearl-pool-a {
+	left: auto;
+	right: -4rem;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl) .pearl-pool-b {
+	right: -5rem;
+	bottom: -4rem;
+	background: rgb(110 170 240 / 0.12);
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl.pearl--enter {
+	z-index: 40;
+	transform-origin: center center;
+	animation: pearl-glide 3.15s linear 0.2s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-aura {
+	animation:
+		pearl-ignite 0.7s var(--pl-sine) 0.05s both,
+		pearl-breathe 10s var(--pl-sine) 2.2s infinite alternate,
+		pearl-drift 14s var(--pl-sine) 2.2s infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-glow {
+	animation:
+		pearl-flash 0.7s var(--pl-sine) 0.1s both,
+		pearl-beat-glow 3.4s var(--pl-sine) 2.2s infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-core {
+	animation:
+		pearl-condense 0.72s cubic-bezier(0.2, 0.72, 0.24, 1) 0.08s both,
+		pearl-float 7s var(--pl-sine) 2.2s infinite alternate,
+		pearl-beat-core 3.4s var(--pl-sine) 2.2s infinite;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-halo:not(.pearl-halo-b) {
+	animation:
+		pearl-unfold 0.78s cubic-bezier(0.25, 0.7, 0.3, 1) 0.16s both,
+		pearl-turn-halo 60s linear 2.2s infinite,
+		pearl-halo-flow 5s var(--pl-sine) 2.2s infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-halo-b {
+	animation:
+		pearl-halo-in 0.85s var(--pl-sine) 0.24s both,
+		pearl-turn-halo-b 80s linear 2.2s infinite,
+		pearl-halo-flow-b 5s var(--pl-sine) 2.2s infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-sheen {
+	animation:
+		pearl-glint-in 0.8s var(--pl-sine) 0.18s both,
+		pearl-glint 12s var(--pl-sine) 2.2s infinite,
+		pearl-spec 8s var(--pl-sine) 2.2s infinite alternate;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-flow,
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-flow2 {
+	animation: pearl-fade 0.65s var(--pl-sine) 0.15s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-current {
+	animation: pearl-fade 0.85s var(--pl-sine) 0.24s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-bloom {
+	animation: pearl-bloom 1.35s var(--pl-sine) 0.2s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl--enter .pearl-ripples b:nth-child(1) {
+	animation:
+		pearl-intro-ripple 1.4s var(--pl-sine) 0.28s both,
+		pearl-beat-wave 3.4s cubic-bezier(0.3, 0.2, 0.35, 1) 2.2s infinite;
+}
+
+html.gravity-pearl.pl-enter .chat-welcome::before {
+	animation: pearl-stage-in 1.4s var(--pl-sine) 0.2s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-title {
+	animation: pearl-blur-side 0.8s var(--pl-sine) 2.45s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-heading .text-sm {
+	animation: pearl-blur-side 0.8s var(--pl-sine) 2.55s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .pearl-pool {
+	animation: pearl-pool-in 1.2s var(--pl-sine) 0.65s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-composer {
+	animation: pearl-rise 0.8s var(--pl-sine) 2.85s both;
+}
+
+html.gravity-pearl.pl-enter .chat-welcome-composer::before {
+	content: '';
+	position: absolute;
+	inset: -2.5rem -4rem;
+	z-index: -1;
+	border-radius: 999px;
+	pointer-events: none;
+	background: radial-gradient(closest-side, rgb(84 204 216 / 0.09), transparent 72%);
+	filter: blur(1.2rem);
+	animation: pearl-pool-in 0.8s var(--pl-sine) 2.85s both;
+}
+
+:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-suggestions {
+	animation: pearl-rise 0.75s var(--pl-sine) 3.4s both;
+}
+
+@keyframes pearl-turn {
+	to {
+		rotate: 360deg;
+	}
+}
+
+@keyframes pearl-turn-halo {
+	from {
+		rotate: -28deg;
+	}
+	to {
+		rotate: 332deg;
+	}
+}
+
+@keyframes pearl-turn-halo-b {
+	from {
+		rotate: 152deg;
+	}
+	to {
+		rotate: -208deg;
+	}
+}
+
+@keyframes pearl-halo-flow {
+	from {
+		opacity: 0.74;
+		scale: 0.985;
+	}
+	to {
+		opacity: 0.96;
+		scale: 1.025;
+	}
+}
+
+@keyframes pearl-halo-flow-b {
+	from {
+		opacity: 0.32;
+		scale: 1.055;
+	}
+	to {
+		opacity: 0.18;
+		scale: 1.015;
+	}
+}
+
+@keyframes pearl-float {
+	from {
+		translate: 0 -2px;
+	}
+	to {
+		translate: 0 2px;
+	}
+}
+
+@keyframes pearl-glint {
+	0%,
+	100% {
+		opacity: 0.35;
+	}
+	9% {
+		opacity: 0.9;
+	}
+	30% {
+		opacity: 0.35;
+	}
+}
+
+@keyframes pearl-spec {
+	to {
+		translate: 7% 5%;
+	}
+}
+
+@keyframes pearl-breathe {
+	from {
+		opacity: 0.85;
+		scale: 0.97;
+	}
+	to {
+		opacity: 1;
+		scale: 1.03;
+	}
+}
+
+@keyframes pearl-drift {
+	0%,
+	100% {
+		transform: translate(0);
+	}
+	30% {
+		transform: translate(18px, -10px);
+	}
+	65% {
+		transform: translate(-14px, 8px);
+	}
+}
+
+@keyframes pearl-beat-wave {
+	0% {
+		opacity: 0;
+		scale: 1;
+	}
+	8% {
+		opacity: 0.85;
+	}
+	72%,
+	100% {
+		opacity: 0;
+		scale: 2.5;
+	}
+}
+
+@keyframes pearl-beat-wide {
+	0% {
+		opacity: 0;
+		scale: 1.1;
+	}
+	15% {
+		opacity: 0.5;
+	}
+	45%,
+	100% {
+		opacity: 0;
+		scale: 3.2;
+	}
+}
+
+@keyframes pearl-beat-glow {
+	0%,
+	42%,
+	100% {
+		scale: 1;
+	}
+	7% {
+		scale: 1.18;
+	}
+	12% {
+		scale: 1.05;
+	}
+	19% {
+		scale: 1.14;
+	}
+}
+
+@keyframes pearl-beat-core {
+	0%,
+	42%,
+	100% {
+		scale: 1;
+	}
+	7% {
+		scale: 1.02;
+	}
+	12% {
+		scale: 1.005;
+	}
+	19% {
+		scale: 1.015;
+	}
+}
+
+@keyframes pearl-wander {
+	to {
+		translate: 6% -5%;
+	}
+}
+
+@keyframes pearl-liquid {
+	0% {
+		transform: translate(-8%, 6%) rotate(0) scale(1);
+	}
+	50% {
+		transform: translate(7%, -4%) rotate(45deg) scale(1.08);
+	}
+	100% {
+		transform: translate(-4%, -9%) rotate(90deg) scale(0.95);
+	}
+}
+
+@keyframes pearl-pop {
+	50% {
+		scale: 1.12;
+	}
+}
+
+@keyframes pearl-ignite {
+	0% {
+		opacity: 0;
+		scale: 0.45;
+	}
+	70% {
+		opacity: 0.95;
+		scale: 1.02;
+	}
+	100% {
+		opacity: 0.95;
+		scale: 1;
+	}
+}
+
+@keyframes pearl-flash {
+	0% {
+		opacity: 0;
+		scale: 0.4;
+	}
+	45% {
+		opacity: 1;
+		scale: 1.5;
+	}
+	100% {
+		opacity: 1;
+		scale: 1;
+	}
+}
+
+@keyframes pearl-condense {
+	0% {
+		opacity: 0;
+		filter: blur(12px);
+		scale: 0.65;
+	}
+	70% {
+		opacity: 1;
+		filter: blur(0);
+		scale: 1.015;
+	}
+	100% {
+		opacity: 1;
+		filter: blur(0);
+		scale: 1;
+	}
+}
+
+@keyframes pearl-unfold {
+	from {
+		opacity: 0;
+		scale: 0.78;
+		rotate: -50deg;
+	}
+	to {
+		opacity: 1;
+		scale: 1;
+		rotate: 0deg;
+	}
+}
+
+@keyframes pearl-halo-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.5;
+	}
+}
+
+@keyframes pearl-glint-in {
+	from {
+		opacity: 0;
+		translate: -22% -14%;
+	}
+	to {
+		opacity: 0.5;
+		translate: 0 0;
+	}
+}
+
+@keyframes pearl-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes pearl-intro-ripple {
+	0% {
+		opacity: 0;
+		scale: 0.95;
+	}
+	35% {
+		opacity: 0.75;
+	}
+	100% {
+		opacity: 0;
+		scale: 2.15;
+	}
+}
+
+@keyframes pearl-bloom {
+	0% {
+		opacity: 0;
+		scale: 0.4;
+	}
+	30% {
+		opacity: 0.38;
+	}
+	100% {
+		opacity: 0;
+		scale: 3.4;
+	}
+}
+
+@keyframes pearl-glide {
+	0%,
+	42% {
+		translate: var(--fx) var(--fy);
+		scale: 2.35;
+		animation-timing-function: cubic-bezier(0.22, 0.86, 0.16, 1);
+	}
+	100% {
+		translate: 0 0;
+		scale: 1;
+	}
+}
+
+@keyframes pearl-stage-in {
+	from {
+		opacity: 0;
+		filter: blur(2rem);
+		scale: 0.96;
+	}
+	to {
+		opacity: 1;
+		filter: blur(1.25rem);
+		scale: 1;
+	}
+}
+
+@keyframes pearl-blur-side {
+	from {
+		opacity: 0;
+		filter: blur(10px);
+		translate: 16px 0;
+	}
+	to {
+		opacity: 1;
+		filter: blur(0);
+		translate: 0 0;
+	}
+}
+
+@keyframes pearl-pool-in {
+	from {
+		opacity: 0;
+		scale: 0.6;
+	}
+	to {
+		opacity: 1;
+		scale: 1;
+	}
+}
+
+@keyframes pearl-rise {
+	from {
+		opacity: 0;
+		translate: 0 14px;
+		scale: 0.97;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+}
+
+@keyframes pearl-chip {
+	from {
+		opacity: 0;
+		translate: 0 10px;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:is(html.gravity-pearl, html.eclipse-pearl) .pearl,
+	:is(html.gravity-pearl, html.eclipse-pearl) .pearl *,
+	:is(html.gravity-pearl, html.eclipse-pearl) .pearl-pool,
+	:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-title,
+	:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-heading .text-sm,
+	:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-composer,
+	html.gravity-pearl.pl-enter .chat-welcome-composer::before,
+	:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .chat-welcome-suggestions,
+	:is(html.gravity-pearl, html.eclipse-pearl).pl-enter .suggestion-card {
+		animation: none !important;
+	}
+}
+
+html.gravity.high-contrast .chat-welcome-title {
+	background: none;
+	color: var(--color-gray-50);
+	-webkit-text-fill-color: var(--color-gray-50);
+}
+
+html.gravity.high-contrast
+	:is(
+		.message-composer,
+		.suggestion-card,
+		.user-message-bubble,
+		.app-dropdown-menu,
+		.app-modal-surface,
+		.app-drawer-surface,
+		.app-notification-toast,
+		.app-update-toast
+	) {
+	border-color: var(--color-gray-400);
+	background: var(--color-gray-900);
+	box-shadow: none;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+html.gravity.high-contrast
+	:is(
+		.gravity-atmosphere__canvas,
+		.gravity-flow-atmosphere__canvas,
+		.gravity-current-atmosphere__canvas
+	) {
+	display: none;
+}
+
+@media (max-width: 48rem) {
+	html.gravity .suggestion-list {
+		grid-template-columns: 1fr;
+	}
+
+	html.gravity .suggestion-frame {
+		min-height: 0;
+	}
+
+	html.gravity .suggestion-card {
+		min-height: 3.25rem;
+	}
+
+	html.gravity-eclipse .suggestion-card,
+	html.gravity-eclipse .chat-welcome .suggestion-card {
+		min-height: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html.gravity .suggestion-card {
+		transition: none;
+	}
+
+	html.gravity .suggestion-card:hover,
+	html.gravity .suggestion-card:focus-visible {
+		transform: none;
+	}
+}
